@@ -35,10 +35,3 @@ functions:
           path: addhack
           method: post
           cors: true
-  hello:
-    handler: handler.hello
-    events:
-      - http:
-          path: hello
-          method: get
-          cors: true

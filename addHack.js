@@ -7,7 +7,7 @@ const uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@d
 export const add = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const data = JSON.parse(event.body);
-  const { title, description } = data;
+  const { title, description, goal } = data;
 
   if (conn == null) {
     conn = await mongoose.createConnection(uri, {
@@ -19,11 +19,11 @@ export const add = async (event, context) => {
     });
     conn.model(
       "Hack",
-      new mongoose.Schema({ title: String, description: String })
+      new mongoose.Schema({ title: String, description: String, goal: String })
     );
   }
   const Hack = conn.model("Hack");
-  const newHack = new Hack({ title, description });
+  const newHack = new Hack({ title, description, goal });
   await newHack.save();
   const hack = await Hack.findOne();
 
