@@ -29,10 +29,10 @@ provider:
 
 functions:
   addHack:
-    handler: addHack.add
+    handler: addhack.add
     events:
       - http:
-          path: addHack
+          path: addhack
           method: post
           cors: true
   hello:
