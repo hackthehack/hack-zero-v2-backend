@@ -1,4 +1,4 @@
-# NOTE: update this with your service name
+# NOTE:           update this with your service name
 service: serverless-nodejs-starter
 
 # Create an optimized package for our functions
@@ -28,9 +28,17 @@ provider:
   #  SAMPLE_ENV_VAR: ${env:SAMPLE_ENV_VAR}
 
 functions:
+  addHack:
+    handler: addHack.add
+    events:
+      - http:
+          path: addHack
+          method: post
+          cors: true
   hello:
     handler: handler.hello
     events:
       - http:
           path: hello
           method: get
+          cors: true

@@ -4,6 +4,15 @@ let conn = null;
 
 const uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
 
+export const addHack = async (event, context) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: `You have hit the create hack endpoint`
+    })
+  };
+};
+
 export const hello = async (event, context) => {
   //console.log(process.env.NODE);
   //console.log(process.env.MONGO_USER);
@@ -21,14 +30,17 @@ export const hello = async (event, context) => {
       bufferCommands: false, // Disable mongoose buffering
       bufferMaxEntries: 0 // and MongoDB driver buffering
     });
-    conn.model("Test", new mongoose.Schema({ name: String }));
+    conn.model(
+      "Hack",
+      new mongoose.Schema({ title: String, description: String })
+    );
   }
 
-  const M = conn.model("Test");
-  const newTest = new M({ name: "test" });
-  await newTest.save();
-  const doc = await M.find();
-  console.log(doc);
+  const Hack = conn.model("Hack");
+  const newHack = new Hack({ title: "test" });
+  await newHack.save();
+  const hack = await Hack.findOne();
+  console.log(hack);
   return {
     statusCode: 200,
     body: JSON.stringify({
