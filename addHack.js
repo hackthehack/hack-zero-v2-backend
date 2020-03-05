@@ -9,10 +9,28 @@ export const add = async (event, context) => {
   const data = JSON.parse(event.body);
   const { title, description } = data;
 
+  if (conn == null) {
+    conn = await mongoose.createConnection(uri, {
+      // Buffering means mongoose will queue up operations if it gets
+      // disconnected from MongoDB and send them when it reconnects.
+      // With serverless, better to fail fast if not connected.
+      bufferCommands: false, // Disable mongoose buffering
+      bufferMaxEntries: 0 // and MongoDB driver buffering
+    });
+    conn.model(
+      "Hack",
+      new mongoose.Schema({ title: String, description: String })
+    );
+  }
+  const Hack = conn.model("Hack");
+  const newHack = new Hack({ title, description });
+  await newHack.save();
+  const hack = await Hack.findOne();
+
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: `You have hit the create hack endpoint`
+      message: `hack created`
     })
   };
 };
