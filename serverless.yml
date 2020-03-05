@@ -26,6 +26,9 @@ provider:
   #
   #environment:
   #  SAMPLE_ENV_VAR: ${env:SAMPLE_ENV_VAR}
+custom:
+  serverless-offline:
+    port: 3001
 
 functions:
   addHack:
