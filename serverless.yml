@@ -1,9 +1,13 @@
 # NOTE: update this with your service name
 service: serverless-nodejs-starter
 
-# Create an optimized package for our functions 
+# Create an optimized package for our functions
 package:
   individually: true
+
+environment:
+  MONGO_USER: ${env:MONGO_USER}
+  MONGO_PASSWORD: ${env:MONGO_PASSWORD}
 
 plugins:
   - serverless-bundle # Package our functions with Webpack
