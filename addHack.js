@@ -25,7 +25,6 @@ export const add = async (event, context) => {
   const Hack = conn.model("Hack");
   const newHack = new Hack({ title, description, goal });
   await newHack.save();
-  const hack = await Hack.findOne();
 
   return {
     statusCode: 200,
