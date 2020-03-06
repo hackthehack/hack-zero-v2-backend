@@ -38,3 +38,10 @@ functions:
           path: addhack
           method: post
           cors: true
+  gethacklist:
+    handler: getHacks.list
+    events:
+      - http:
+          path: hacklist
+          method: get
+          cors: true
