@@ -22,6 +22,6 @@ export const detail = async (event, context) => {
   console.log(result);
   return {
     statusCode: 200,
-    body: "this is detail route"
+    body: JSON.stringify(result)
   };
 };
