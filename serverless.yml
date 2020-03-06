@@ -35,7 +35,7 @@ functions:
     handler: hackDetail.detail
     events:
       - http:
-          path: hackdetail
+          path: hackdetail/{id}
           method: get
           cors: true
   addhack:
