@@ -10,6 +10,7 @@ environment:
   MONGO_PASSWORD: ${env:MONGO_PASSWORD}
   AWS_ACCESS_KEY_ID: ${evn:AWS_ACCESS_KEY_ID}
   AWS_SECRET: ${evn:AWS_SECRET}
+  AWS_USER_POOL_ID: ${evn:AWS_USER_POOL_ID}
 
 plugins:
   - serverless-bundle # Package our functions with Webpack
