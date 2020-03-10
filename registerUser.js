@@ -21,16 +21,19 @@ const createUserPromise = userParams => {
 };
 
 export const register = async (event, context) => {
+  const data = JSON.parse(event.body);
+  const { email, password } = data;
   const params = {
     UserPoolId: process.env.AWS_USER_POOL_ID,
-    Username: "test3@test.com",
+    Username: email,
     DesiredDeliveryMediums: ["EMAIL"],
     ForceAliasCreation: false,
-    TemporaryPassword: "Test@1234",
-    UserAttributes: [{ Name: "email", Value: "test3@test.com" }]
+    TemporaryPassword: password,
+    UserAttributes: [{ Name: "email", Value: email }]
   };
   let result = await createUserPromise(params);
   console.log(result);
+
   return {
     statusCode: 200,
     body: "register route"
