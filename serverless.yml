@@ -26,6 +26,29 @@ provider:
   #
   #environment:
   #  SAMPLE_ENV_VAR: ${env:SAMPLE_ENV_VAR}
+CognitoUserPool:
+  Type: "AWS::Cognito::UserPool"
+  Properties:
+    MfaConfiguration: OFF
+    UserPoolName: hackOne
+    UsernameAttributes:
+      - email
+    Policies:
+      PasswordPolicy:
+        MinimumLength: 8
+        RequireLowercase: False
+        RequireNumbers: True
+        RequireSymbols: False
+        RequireUppercase: True
+
+CognitoUserPoolClient:
+  Type: "AWS::Cognito::UserPoolClient"
+  Properties:
+    ClientName: hackOne
+    GenerateSecret: False
+    UserPoolId:
+      Ref: CognitoUserPool
+
 custom:
   serverless-offline:
     port: 3001
