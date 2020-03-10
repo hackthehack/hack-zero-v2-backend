@@ -1,7 +1,7 @@
 let AWS = require("aws-sdk");
 
 AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  accessKeyId: process.env.AWS_ACC_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET
 });
 const COGNITO_CLIENT = new AWS.CognitoIdentityServiceProvider({
@@ -33,9 +33,10 @@ const createUserPromise = userParams => {
 };
 
 export const register = async (event, context) => {
+  // console.log(event.body);
   const data = JSON.parse(event.body);
   const { email, password } = data;
-  let awsUserName = "";
+  // let awsUserName = "";
   const createUserParams = {
     UserPoolId: process.env.AWS_USER_POOL_ID,
     Username: email,
@@ -50,16 +51,20 @@ export const register = async (event, context) => {
     Username: email /* required */,
     Permanent: true
   };
-  let result = await createUserPromise(createUserParams);
+  await createUserPromise(createUserParams);
   //console.log(result);
-  awsUserName = result.User.Username;
+  // awsUserName = result.User.Username;
   //console.log("aws username");
   //console.log(awsUserName);
-  let passwordResult = await setPasswordPromise(passwordParams);
+  await setPasswordPromise(passwordParams);
   //console.log(passwordResult);
 
   return {
     statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
     body: "User created"
   };
 };
