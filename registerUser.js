@@ -12,7 +12,7 @@ const setPasswordPromise = userParams => {
   return new Promise((resolve, reject) => {
     COGNITO_CLIENT.adminSetUserPassword(userParams, (error, data) => {
       if (error) {
-        console.log(error);
+        //console.log(error);
         reject("unable to set password");
       }
       resolve(data);
@@ -23,10 +23,10 @@ const createUserPromise = userParams => {
   return new Promise((resolve, reject) => {
     COGNITO_CLIENT.adminCreateUser(userParams, (error, data) => {
       if (error) {
-        console.log(error);
+        //console.log(error);
         reject("Unable to create user");
       }
-      console.log(data);
+      //console.log(data);
       resolve(data);
     });
   });
@@ -51,12 +51,12 @@ export const register = async (event, context) => {
     Permanent: true
   };
   let result = await createUserPromise(createUserParams);
-  console.log(result);
+  //console.log(result);
   awsUserName = result.User.Username;
-  console.log("aws username");
-  console.log(awsUserName);
+  //console.log("aws username");
+  //console.log(awsUserName);
   let passwordResult = await setPasswordPromise(passwordParams);
-  console.log(passwordResult);
+  //console.log(passwordResult);
 
   return {
     statusCode: 200,
