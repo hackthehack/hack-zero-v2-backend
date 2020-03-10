@@ -18,14 +18,26 @@ export const detail = async (event, context) => {
     );
   }
   const Hack = conn.model("Hack");
-  let result = await Hack.findById(id);
-  console.log(result);
-  return {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-      "Access-Control-Allow-Credentials": true
-    },
-    body: JSON.stringify(result)
-  };
+
+  try {
+    let result = await Hack.findById(id);
+    //console.log(result);
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: JSON.stringify(result)
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: "Failed to get hack detail"
+    };
+  }
 };

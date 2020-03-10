@@ -23,17 +23,31 @@ export const add = async (event, context) => {
     );
   }
   const Hack = conn.model("Hack");
-  const newHack = new Hack({ title, description, goal });
-  await newHack.save();
 
-  return {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-      "Access-Control-Allow-Credentials": true
-    },
-    body: JSON.stringify({
-      message: `hack created`
-    })
-  };
+  try {
+    const newHack = new Hack({ title, description, goal });
+    await newHack.save();
+
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: JSON.stringify({
+        message: `hack created`
+      })
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: JSON.stringify({
+        message: `Unable to create hack`
+      })
+    };
+  }
 };

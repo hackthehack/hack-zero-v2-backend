@@ -26,13 +26,24 @@ export const list = async (event, context) => {
    * To be used in the future This will return One document
    * const doc = await Query.findOne({_id: '5e6094446a56971ad6a32d7b'});
    */
-  const doc = await Query.find();
-  return {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-      "Access-Control-Allow-Credentials": true
-    },
-    body: JSON.stringify(doc)
-  };
+  try {
+    const doc = await Query.find();
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: JSON.stringify(doc)
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: "Uable to fetch hacks data"
+    };
+  }
 };
