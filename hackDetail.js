@@ -23,8 +23,8 @@ export const detail = async (event, context) => {
   return {
     statusCode: 200,
     headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true,
+      "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+      "Access-Control-Allow-Credentials": true
     },
     body: JSON.stringify(result)
   };
