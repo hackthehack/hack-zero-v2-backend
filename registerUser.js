@@ -1,5 +1,5 @@
 let AWS = require("aws-sdk");
-let util = require("util");
+
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET
@@ -8,6 +8,17 @@ const COGNITO_CLIENT = new AWS.CognitoIdentityServiceProvider({
   apiVersion: "2016-04-19",
   region: "us-east-1"
 });
+const setPasswordPromise = userParams => {
+  return new Promise((resolve, reject) => {
+    COGNITO_CLIENT.adminSetUserPassword(userParams, (error, data) => {
+      if (error) {
+        console.log(error);
+        reject("unable to set password");
+      }
+      resolve(data);
+    });
+  });
+};
 const createUserPromise = userParams => {
   return new Promise((resolve, reject) => {
     COGNITO_CLIENT.adminCreateUser(userParams, (error, data) => {
@@ -15,6 +26,7 @@ const createUserPromise = userParams => {
         console.log(error);
         reject("Unable to create user");
       }
+      console.log(data);
       resolve(data);
     });
   });
@@ -23,7 +35,8 @@ const createUserPromise = userParams => {
 export const register = async (event, context) => {
   const data = JSON.parse(event.body);
   const { email, password } = data;
-  const params = {
+  let awsUserName = "";
+  const createUserParams = {
     UserPoolId: process.env.AWS_USER_POOL_ID,
     Username: email,
     DesiredDeliveryMediums: ["EMAIL"],
@@ -31,11 +44,22 @@ export const register = async (event, context) => {
     TemporaryPassword: password,
     UserAttributes: [{ Name: "email", Value: email }]
   };
-  let result = await createUserPromise(params);
+  const passwordParams = {
+    Password: password /* required */,
+    UserPoolId: process.env.AWS_USER_POOL_ID /* required */,
+    Username: email /* required */,
+    Permanent: true
+  };
+  let result = await createUserPromise(createUserParams);
   console.log(result);
+  awsUserName = result.User.Username;
+  console.log("aws username");
+  console.log(awsUserName);
+  let passwordResult = await setPasswordPromise(passwordParams);
+  console.log(passwordResult);
 
   return {
     statusCode: 200,
-    body: "register route"
+    body: "User created"
   };
 };
