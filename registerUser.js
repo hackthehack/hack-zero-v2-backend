@@ -1,5 +1,9 @@
 let AWS = require("aws-sdk");
 const util = require("util");
+const mongoose = require("mongoose");
+let conn = null;
+const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
+
 AWS.config.update({
   accessKeyId: process.env.AWS_ACC_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET
@@ -20,7 +24,7 @@ const utilPromiseSetPassword = util
 export const register = async (event, context) => {
   // console.log(event.body);
   const data = JSON.parse(event.body);
-  const { email, password } = data;
+  const { email, password, name } = data;
   // let awsUserName = "";
 
   const createUserParams = {
@@ -38,9 +42,20 @@ export const register = async (event, context) => {
     Permanent: true
   };
 
+  if (conn == null) {
+    conn = await mongoose.createConnection(url, {
+      bufferCommands: false,
+      bufferMaxEntries: 0
+    });
+    conn.model("User", new mongoose.Schema({ name: String, email: String }));
+  }
+  const User = conn.model("User");
+
   try {
     await utilPromiseRegisterUser(createUserParams);
     await utilPromiseSetPassword(passwordParams);
+    const newUser = new User({ email, name });
+    await newUser.save();
     return {
       statusCode: 200,
       headers: {
