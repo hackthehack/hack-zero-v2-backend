@@ -37,15 +37,26 @@ export const register = async (event, context) => {
     Username: email /* required */,
     Permanent: true
   };
-  await utilPromiseRegisterUser(createUserParams);
-  await utilPromiseSetPassword(passwordParams);
 
-  return {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-      "Access-Control-Allow-Credentials": true
-    },
-    body: "User created"
-  };
+  try {
+    await utilPromiseRegisterUser(createUserParams);
+    await utilPromiseSetPassword(passwordParams);
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: "User created"
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: "Registration failed!!"
+    };
+  }
 };
