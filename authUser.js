@@ -1,5 +1,9 @@
+const mongoose = require("mongoose");
+
 let AWS = require("aws-sdk");
 const util = require("util");
+let conn = null;
+const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACC_KEY_ID,
@@ -24,6 +28,15 @@ export const auth = async (event, context) => {
   const data = JSON.parse(event.body);
   const { email, password} = data;
 
+  if (conn == null) {
+    conn = await mongoose.createConnection(url, {
+      bufferCommands: false,
+      bufferMaxEntries: 0
+    });
+    conn.model("User", new mongoose.Schema({ _id: String }));
+  }
+  const Query = conn.model("User");
+
   const userAuthParams = {
     ClientId: process.env.AWS_USER_Client_ID,
     AuthFlow: "USER_PASSWORD_AUTH",
@@ -41,7 +54,10 @@ export const auth = async (event, context) => {
    * const doc = await Query.findOne({_id: '5e6094446a56971ad6a32d7b'});
    */
   try {
-    const response = await utilPromiseInitAuth(userAuthParams);
+    let response = await utilPromiseInitAuth(userAuthParams);
+    const doc = await Query.findOne({email:email});
+    console.log(doc._id);
+    response = {...response, userId: doc._id};
     return {
       statusCode: 200,
       headers: {
