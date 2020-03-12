@@ -71,7 +71,7 @@ export const register = async (event, context) => {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: "Registration failed!!"
+      body: err.message
     };
   }
 };

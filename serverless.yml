@@ -86,10 +86,24 @@ functions:
           path: addhack
           method: post
           cors: true
+  joinhack:
+    handler: joinHack.join
+    events:
+      - http:
+          path: joinhack
+          method: post
+          cors: true
   gethacklist:
     handler: getHacks.list
     events:
       - http:
           path: hacklist
+          method: get
+          cors: true
+  getuserlist:
+    handler: getUsers.list
+    events:
+      - http:
+          path: userlist
           method: get
           cors: true
