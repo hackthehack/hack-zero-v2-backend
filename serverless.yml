@@ -100,3 +100,10 @@ functions:
           path: hacklist
           method: get
           cors: true
+  getuserlist:
+    handler: getUsers.list
+    events:
+      - http:
+          path: userlist
+          method: get
+          cors: true
