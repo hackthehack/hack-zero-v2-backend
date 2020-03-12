@@ -7,26 +7,22 @@ const uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@d
 export const join = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const data = JSON.parse(event.body);
-  const { title, description, goal } = data;
+  const { hackId, userId } = data;
 
   if (conn == null) {
     conn = await mongoose.createConnection(uri, {
-      // Buffering means mongoose will queue up operations if it gets
-      // disconnected from MongoDB and send them when it reconnects.
-      // With serverless, better to fail fast if not connected.
-      bufferCommands: false, // Disable mongoose buffering
-      bufferMaxEntries: 0 // and MongoDB driver buffering
+      bufferCommands: false,
+      bufferMaxEntries: 0
     });
     conn.model(
       "Hack",
-      new mongoose.Schema({ title: String, description: String, goal: String })
+      new mongoose.Schema({team: Array})
     );
   }
   const Hack = conn.model("Hack");
 
   try {
-    const newHack = new Hack({ title, description, goal });
-    await newHack.save();
+    let res = await Hack.findOneAndUpdate({_id: hackId}, {$push: {team: userId} }, {new: true, upsert: true});
 
     return {
       statusCode: 200,
@@ -34,9 +30,7 @@ export const join = async (event, context) => {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: JSON.stringify({
-        message: `hack created`
-      })
+      body: JSON.stringify(res)
     };
   } catch (err) {
     return {
@@ -45,9 +39,7 @@ export const join = async (event, context) => {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: JSON.stringify({
-        message: `Unable to create hack`
-      })
+      body: JSON.stringify(err.message)
     };
   }
 };
