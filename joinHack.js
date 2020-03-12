@@ -9,6 +9,8 @@ export const join = async (event, context) => {
   const data = JSON.parse(event.body);
   const { hackId, userId } = data;
 
+  const mongUserID = mongoose.Types.ObjectId(userId);
+
   if (conn == null) {
     conn = await mongoose.createConnection(uri, {
       bufferCommands: false,
@@ -22,7 +24,7 @@ export const join = async (event, context) => {
   const Hack = conn.model("Hack");
 
   try {
-    let res = await Hack.findOneAndUpdate({_id: hackId}, {$push: {team: userId} }, {new: true, upsert: true});
+    let res = await Hack.findOneAndUpdate({_id: hackId}, {$push: {team: mongUserID } }, {new: true, upsert: true});
 
     return {
       statusCode: 200,
