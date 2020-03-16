@@ -20,12 +20,20 @@ export const join = async (event, context) => {
       "Hack",
       new mongoose.Schema({team: Array})
     );
+    conn.model("User", new mongoose.Schema({ name: String, email: String }));
   }
   const Hack = conn.model("Hack");
-
+  const Team = conn.model("User");
   try {
     let res = await Hack.findOneAndUpdate({_id: hackId}, {$push: {team: mongUserID } }, {new: true, upsert: true});
-
+    const users = await Team.find();
+    for(const team_key in res.team){
+      users.forEach(member => {
+        if(JSON.stringify(member._id) == JSON.stringify(res.team[team_key])){
+          res.team[team_key] = {_id: member._id, name: member.name};
+        }
+      });
+    }
     return {
       statusCode: 200,
       headers: {

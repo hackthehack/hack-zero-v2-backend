@@ -18,16 +18,29 @@ export const list = async (event, context) => {
     });
     conn.model(
       "Hack",
-      new mongoose.Schema({ title: String, description: String, goal: String })
+      new mongoose.Schema({ title: String, description: String, goal: String, team: Array })
     );
+    conn.model("User", new mongoose.Schema({ name: String, email: String }));
   }
   const Query = conn.model("Hack");
+  const Teams = conn.model("User");
+
   /**
    * To be used in the future This will return One document
    * const doc = await Query.findOne({_id: '5e6094446a56971ad6a32d7b'});
    */
   try {
     const doc = await Query.find();
+    const users = await Teams.find();
+    for(const hack_key in doc){
+      for(const team_key in doc[hack_key].team){
+        users.forEach(member => {
+          if(JSON.stringify(member._id) == JSON.stringify(doc[hack_key].team[team_key])){
+            doc[hack_key].team[team_key] = {_id: member._id, name: member.name};
+          }
+        });
+      }
+    }
     return {
       statusCode: 200,
       headers: {
