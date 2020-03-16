@@ -14,14 +14,24 @@ export const detail = async (event, context) => {
     });
     conn.model(
       "Hack",
-      new mongoose.Schema({ title: String, description: String, goal: String })
+      new mongoose.Schema({ title: String, description: String, goal: String, team: Array })
     );
+    conn.model("User", new mongoose.Schema({ name: String, email: String }));
   }
   const Hack = conn.model("Hack");
+  const Team = conn.model("User");
 
   try {
+
     let result = await Hack.findById(id);
-    //console.log(result);
+    const users = await Team.find();
+    for(const team_key in result.team){
+      users.forEach(member => {
+        if(JSON.stringify(member._id) == JSON.stringify(result.team[team_key])){
+          result.team[team_key] = {_id: member._id, name: member.name};
+        }
+      });
+    }
     return {
       statusCode: 200,
       headers: {
