@@ -27,6 +27,10 @@ export const add = async (event, context) => {
   try {
     const newHack = new Hack({ title, description, goal, team });
     const query = await newHack.save();
+<<<<<<< HEAD
+=======
+    console.log(query._id);
+>>>>>>> 24acf08... Updated AddHack.js to take a team array
     return {
       statusCode: 200,
       headers: {
