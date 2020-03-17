@@ -21,7 +21,7 @@ export const detail = async (event, context) => {
 
   try {
 
-    let result = await Hack.findById(id).populate('team', null, 'User');
+    let result = await Hack.findById(id).populate('team', '-email', 'User');
     return {
       statusCode: 200,
       headers: {

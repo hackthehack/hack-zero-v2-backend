@@ -58,13 +58,6 @@ custom:
     port: 3001
 
 functions:
-  authuser:
-    handler: authUser.auth
-    events:
-      - http:
-          path: auth
-          method: post
-          cors: true
   registeruser:
     handler: registerUser.register
     events:
@@ -98,12 +91,5 @@ functions:
     events:
       - http:
           path: hacklist
-          method: get
-          cors: true
-  getuserlist:
-    handler: getUsers.list
-    events:
-      - http:
-          path: userlist
           method: get
           cors: true

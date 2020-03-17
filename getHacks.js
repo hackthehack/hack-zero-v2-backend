@@ -20,11 +20,11 @@ export const list = async (event, context) => {
       "Hack",
       new mongoose.Schema({ title: String, description: String, goal: String, team: Array })
     );
-    conn.model("User", new mongoose.Schema({ name: String, email: String }));
+    conn.model("User", new mongoose.Schema({ name: String }));
   }
   const Query = conn.model("Hack");
   try {
-    const doc = await Query.find().populate('team', null, 'User');
+    const doc = await Query.find().populate('team', '-email', 'User');
     return {
       statusCode: 200,
       headers: {
