@@ -15,8 +15,14 @@ export const edit = async (event, context) => {
     });
     conn.model(
       "Hack",
-      new mongoose.Schema({ title: String, description: String, goal: String })
+      new mongoose.Schema({
+        title: String,
+        description: String,
+        goal: String,
+        team: Array
+      })
     );
+    conn.model("User", new mongoose.Schema({ name: String }));
   }
   const Hack = conn.model("Hack");
 
@@ -26,8 +32,11 @@ export const edit = async (event, context) => {
   if (description) update.description = description;
 
   try {
-    const result = await Hack.findByIdAndUpdate(hackId, update, { new: true });
+    const result = await Hack.findByIdAndUpdate(hackId, update, {
+      new: true
+    }).populate("team", "name", "User");
 
+    console.log(result);
     return {
       statusCode: 200,
       headers: {
@@ -37,6 +46,7 @@ export const edit = async (event, context) => {
       body: JSON.stringify(result)
     };
   } catch (err) {
+    console.log(err.message);
     return {
       statusCode: 500,
       headers: {
