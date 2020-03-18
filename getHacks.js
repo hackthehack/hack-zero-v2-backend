@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 let conn = null;
 const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
-
+console.log("mongo user", process.env.MONGO_USER);
 /**
  * Lists all Hacks currently stored in the database
  * @param {*} event
@@ -18,13 +18,18 @@ export const list = async (event, context) => {
     });
     conn.model(
       "Hack",
-      new mongoose.Schema({ title: String, description: String, goal: String, team: Array })
+      new mongoose.Schema({
+        title: String,
+        description: String,
+        goal: String,
+        team: Array
+      })
     );
     conn.model("User", new mongoose.Schema({ name: String }));
   }
   const Query = conn.model("Hack");
   try {
-    const doc = await Query.find().populate('team', '-email', 'User');
+    const doc = await Query.find().populate("team", "-email", "User");
     return {
       statusCode: 200,
       headers: {
