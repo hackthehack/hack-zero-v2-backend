@@ -7,7 +7,7 @@ export const edit = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const data = JSON.parse(event.body);
   const { goal, title, description, hackId } = data;
-
+  let update = {};
   if (conn == null) {
     conn = await mongoose.createConnection(url, {
       // Buffering means mongoose will queue up operations if it gets
@@ -23,7 +23,11 @@ export const edit = async (event, context) => {
   }
   const Hack = conn.model("Hack");
 
-  const update = { goal, title, description };
+  // guard against empty fields
+  if (goal) update.goal = goal;
+  if (title) update.title = title;
+  if (description) update.descripton = description;
+
   const result = await Hack.findByIdAndUpdate(hackId, update, { new: true });
   console.log(result);
   return {
