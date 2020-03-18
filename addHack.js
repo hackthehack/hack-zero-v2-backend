@@ -27,7 +27,6 @@ export const add = async (event, context) => {
   try {
     const newHack = new Hack({ title, description, goal, team });
     const query = await newHack.save();
-    console.log(query._id);
     return {
       statusCode: 200,
       headers: {
