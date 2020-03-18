@@ -10,9 +10,6 @@ export const edit = async (event, context) => {
   let update = {};
   if (conn == null) {
     conn = await mongoose.createConnection(url, {
-      // Buffering means mongoose will queue up operations if it gets
-      // disconnected from MongoDB and send them when it reconnects.
-      // With serverless, better to fail fast if not connected.
       bufferCommands: false, // Disable mongoose buffering
       bufferMaxEntries: 0 // and MongoDB driver buffering
     });
@@ -28,14 +25,25 @@ export const edit = async (event, context) => {
   if (title) update.title = title;
   if (description) update.descripton = description;
 
-  const result = await Hack.findByIdAndUpdate(hackId, update, { new: true });
-  console.log(result);
-  return {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-      "Access-Control-Allow-Credentials": true
-    },
-    body: "edit hack route"
-  };
+  try {
+    const result = await Hack.findByIdAndUpdate(hackId, update, { new: true });
+
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: JSON.stringify(result)
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: "Uable to update hack detail"
+    };
+  }
 };
