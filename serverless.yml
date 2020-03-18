@@ -17,8 +17,8 @@ provider:
   region: us-east-1
 
 environment:
-  MONGO_USER: ${self:custom.mongoUser:${self.custom.stage}}
-  MONGO_PASSWORD: ${self:custom.mongoPassword:${self.custom.stage}}
+  MONGO_USER: ${env:MONGO_USER}
+  MONGO_PASSWORD: ${env:MONGO_PASSWORD}
   AWS_ACCESS_KEY_ID: ${env:AWS_ACC_KEY_ID}
   AWS_SECRET: ${env:AWS_SECRET}
   AWS_USER_POOL_ID: ${env:AWS_USER_POOL_ID}
@@ -27,13 +27,13 @@ environment:
 custom:
   serverless-offline:
     port: 3001
-  stage: ${opt:stage, self:provider.stage}
-  mongoUser:
-    staging: ${{env.MONGO_USER}}
-    production: ${{secrets.MONGO_USER}}
-  mongosPassword:
-    staging: ${{env.MONGO_PASSWORD}}
-    production: ${{secrets.MONGO_PASSWORD}}
+  # stage: ${opt:stage, self:provider.stage}
+  # mongoUser:
+  #   staging: ${{env.MONGO_USER}}
+  #   production: ${{secrets.MONGO_USER}}
+  # mongosPassword:
+  #   staging: ${{env.MONGO_PASSWORD}}
+  #   production: ${{secrets.MONGO_PASSWORD}}
 
 functions:
   authuser:
