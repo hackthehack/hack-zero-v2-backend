@@ -23,7 +23,7 @@ export const edit = async (event, context) => {
   // guard against empty fields
   if (goal) update.goal = goal;
   if (title) update.title = title;
-  if (description) update.descripton = description;
+  if (description) update.description = description;
 
   try {
     const result = await Hack.findByIdAndUpdate(hackId, update, { new: true });
