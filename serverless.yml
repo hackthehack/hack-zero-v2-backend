@@ -27,13 +27,8 @@ environment:
 custom:
   serverless-offline:
     port: 3001
-  # stage: ${opt:stage, self:provider.stage}
-  # mongoUser:
-  #   staging: ${{env.MONGO_USER}}
-  #   production: ${{secrets.MONGO_USER}}
-  # mongosPassword:
-  #   staging: ${{env.MONGO_PASSWORD}}
-  #   production: ${{secrets.MONGO_PASSWORD}}
+  dotenv:
+    path: .env.production
 
 functions:
   authuser:
