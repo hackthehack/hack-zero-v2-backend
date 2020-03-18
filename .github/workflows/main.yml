@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - master
+      - github-action-part2
 name: Deploy master branch
 jobs:
   deploy:
