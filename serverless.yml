@@ -58,6 +58,13 @@ custom:
     port: 3001
 
 functions:
+  edithack:
+    handler: editHack.edit
+    events:
+      - http:
+          path: edithack
+          method: post
+          cors: true
   authuser:
     handler: authUser.auth
     events:
