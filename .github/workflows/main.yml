@@ -14,8 +14,8 @@ jobs:
         run: ./.github/scripts/decrypt.sh
         env:
           SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
-      - name: Check current directory
-        run: ls
+      - name: Test printing your secret (Remove this step in production)
+        run: cat $HOME/.env.production
       - uses: actions/checkout@master
       - run: npm install
       - name: serverless deploy
