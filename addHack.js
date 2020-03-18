@@ -7,7 +7,7 @@ const uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@d
 export const add = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const data = JSON.parse(event.body);
-  const { title, description, goal } = data;
+  const { title, description, goal, team } = data;
 
   if (conn == null) {
     conn = await mongoose.createConnection(uri, {
@@ -19,15 +19,14 @@ export const add = async (event, context) => {
     });
     conn.model(
       "Hack",
-      new mongoose.Schema({ title: String, description: String, goal: String })
+      new mongoose.Schema({ title: String, description: String, goal: String, team: Array })
     );
   }
   const Hack = conn.model("Hack");
 
   try {
-    const newHack = new Hack({ title, description, goal });
-    await newHack.save();
-
+    const newHack = new Hack({ title, description, goal, team });
+    const query = await newHack.save();
     return {
       statusCode: 200,
       headers: {
@@ -35,7 +34,8 @@ export const add = async (event, context) => {
         "Access-Control-Allow-Credentials": true
       },
       body: JSON.stringify({
-        message: `hack created`
+        message: `hack created`,
+        id: query._id
       })
     };
   } catch (err) {
