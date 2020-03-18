@@ -18,16 +18,13 @@ export const list = async (event, context) => {
     });
     conn.model(
       "Hack",
-      new mongoose.Schema({ title: String, description: String, goal: String })
+      new mongoose.Schema({ title: String, description: String, goal: String, team: Array })
     );
+    conn.model("User", new mongoose.Schema({ name: String }));
   }
   const Query = conn.model("Hack");
-  /**
-   * To be used in the future This will return One document
-   * const doc = await Query.findOne({_id: '5e6094446a56971ad6a32d7b'});
-   */
   try {
-    const doc = await Query.find();
+    const doc = await Query.find().populate('team', '-email', 'User');
     return {
       statusCode: 200,
       headers: {
