@@ -34,6 +34,8 @@ custom:
   mongosPassword:
     staging: ${{env.MONGO_PASSWORD}}
     production: ${{secrets.MONGO_PASSWORD}}
+  dotenv:
+    path: .env.production
 
 functions:
   authuser:
