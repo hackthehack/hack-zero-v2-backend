@@ -6,4 +6,4 @@
 sudo gpg --quiet --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" \
 --output .env.production .env.gpg
 
-cat .env.production
+#cat .env.production
