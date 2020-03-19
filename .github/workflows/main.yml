@@ -22,7 +22,7 @@ jobs:
 
         uses: serverless/github-action@master
         with:
-          args: NODE_ENV=production deploy -s production
+          args: deploy -s production --env production
         env:
           # or if using AWS creds directly
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
