@@ -17,8 +17,9 @@ jobs:
 
       - uses: actions/checkout@master
       - run: npm install
+      - run: echo $HOME
       - name: serverless deploy
-        run: echo $HOME
+
         uses: serverless/github-action@master
         with:
           args: deploy -s production
