@@ -32,6 +32,13 @@ custom:
     path: .env.production
 
 functions:
+  edithack:
+    handler: editHack.edit
+    events:
+      - http:
+          path: edithack
+          method: post
+          cors: true
   authuser:
     handler: authUser.auth
     events:
