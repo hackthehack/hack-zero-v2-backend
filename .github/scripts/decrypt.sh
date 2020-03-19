@@ -6,6 +6,6 @@ sudo mkdir $HOME/secrets
 sudo gpg --quiet --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" \
 --output $HOME/secrets/.env.production .env.gpg
 
-ls $HOME/secret
+ls $HOME/secrets
 echo "++++++++++++"
 ls -a
