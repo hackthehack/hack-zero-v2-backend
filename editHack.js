@@ -6,7 +6,7 @@ const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@d
 export const edit = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const data = JSON.parse(event.body);
-  const { goal, title, description, hackId } = data;
+  const { goal, title, description, hackId, teamName } = data;
   let update = {};
   if (conn == null) {
     conn = await mongoose.createConnection(url, {
@@ -19,7 +19,8 @@ export const edit = async (event, context) => {
         title: String,
         description: String,
         goal: String,
-        team: Array
+        team: Array,
+        teamName: String
       })
     );
     conn.model("User", new mongoose.Schema({ name: String }));
@@ -30,6 +31,7 @@ export const edit = async (event, context) => {
   if (goal) update.goal = goal;
   if (title) update.title = title;
   if (description) update.description = description;
+  if (teamName) update.teamName = teamName;
 
   try {
     const result = await Hack.findByIdAndUpdate(hackId, update, {
