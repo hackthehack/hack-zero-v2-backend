@@ -17,7 +17,7 @@ jobs:
 
       - uses: actions/checkout@master
       - run: npm install
-      - run: ls -a /home/runner/work/hack-zero-v2-backend/hack-zero-v2-backend
+      - run: ls -a /github/home/secrets
       - name: serverless deploy
 
         uses: serverless/github-action@master
