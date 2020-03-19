@@ -17,7 +17,7 @@ jobs:
 
       - uses: actions/checkout@master
       - run: npm install
-      - run: ls -a /github/home/secrets
+      - run: ls -a $HOME/secrets
       - name: serverless deploy
 
         uses: serverless/github-action@master
