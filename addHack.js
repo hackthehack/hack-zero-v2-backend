@@ -8,7 +8,7 @@ export const add = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const data = JSON.parse(event.body);
   const { title, description, goal, team } = data;
-  let newHack = {};
+  let newIdea = {};
   if (conn == null) {
     conn = await mongoose.createConnection(uri, {
       // Buffering means mongoose will queue up operations if it gets
@@ -29,13 +29,13 @@ export const add = async (event, context) => {
   }
   const Hack = conn.model("Hack");
 
-  if (title) newHack.title = title;
-  if (description) newHack.description = description;
-  if (goal) newHack.goal = goal;
-  if (team) newHack.team = team;
+  if (title) newIdea.title = title;
+  if (description) newIdea.description = description;
+  if (goal) newIdea.goal = goal;
+  if (team) newIdea.team = team;
 
   try {
-    const newHack = new Hack(newHack);
+    const newHack = new Hack(newIdea);
     const query = await newHack.save();
     return {
       statusCode: 200,
@@ -49,6 +49,7 @@ export const add = async (event, context) => {
       })
     };
   } catch (err) {
+    console.log(err);
     return {
       statusCode: 500,
       headers: {
