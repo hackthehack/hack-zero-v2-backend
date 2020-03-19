@@ -7,6 +7,6 @@ sudo gpg --quiet --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" \
 --output $HOME/secrets/.env.production .env.gpg
 
 ls $HOME/
-pwd
+echo "$$$$$$$$$$"
+ls /home/runner/work/hack-zero-v2-backend/hack-zero-v2-backend
 echo "++++++++++++"
-ls -a
