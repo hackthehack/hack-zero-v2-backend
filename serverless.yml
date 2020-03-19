@@ -28,7 +28,7 @@ custom:
   serverless-offline:
     port: 3001
   dotenv:
-    path: ./runner/.env.production
+    path: .env.production
 
 functions:
   authuser:
