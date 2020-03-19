@@ -7,6 +7,7 @@ sudo gpg --quiet --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" \
 --output $HOME/secrets/.env.production .env.gpg
 
 ls $HOME/
-echo "$$$$$$$$$$"
+echo "-----ROOT-----Above----"
+echo "----current WORKDIR-----"
 ls /home/runner/work/hack-zero-v2-backend/hack-zero-v2-backend
 echo "++++++++++++"
