@@ -15,7 +15,7 @@ jobs:
         env:
           SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
 
-      - uses: actions/checkout@master
+      #- uses: actions/checkout@master
       - run: npm install
       - run: ls -a $HOME/secrets
       - name: serverless deploy
@@ -28,4 +28,4 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           NODE_ENV: production
-          HOME: HOME
+          HOME: $HOME
