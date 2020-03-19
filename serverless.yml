@@ -29,7 +29,7 @@ custom:
   serverless-offline:
     port: 3001
   dotenv:
-    path: /home/runner/work/hack-zero-v2-backend/hack-zero-v2-backend/secrets/.env.production
+    path: /github/home/screts/.env.production
 
 functions:
   edithack:
