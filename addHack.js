@@ -8,7 +8,7 @@ export const add = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const data = JSON.parse(event.body);
   const { title, description, goal, team } = data;
-
+  let newHack = {};
   if (conn == null) {
     conn = await mongoose.createConnection(uri, {
       // Buffering means mongoose will queue up operations if it gets
@@ -19,13 +19,23 @@ export const add = async (event, context) => {
     });
     conn.model(
       "Hack",
-      new mongoose.Schema({ title: String, description: String, goal: String, team: Array })
+      new mongoose.Schema({
+        title: { type: String, default: "" },
+        description: { type: String, default: "" },
+        goal: { type: String, default: "" },
+        team: { type: Array, default: [] }
+      })
     );
   }
   const Hack = conn.model("Hack");
 
+  if (title) newHack.title = title;
+  if (description) newHack.description = description;
+  if (goal) newHack.goal = goal;
+  if (team) newHack.team = team;
+
   try {
-    const newHack = new Hack({ title, description, goal, team });
+    const newHack = new Hack(newHack);
     const query = await newHack.save();
     return {
       statusCode: 200,
