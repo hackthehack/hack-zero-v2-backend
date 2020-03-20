@@ -5,14 +5,6 @@ service: hackOne-api
 package:
   individually: true
 
-environment:
-  MONGO_USER: ${env:MONGO_USER}
-  MONGO_PASSWORD: ${env:MONGO_PASSWORD}
-  AWS_ACCESS_KEY_ID: ${env:AWS_ACC_KEY_ID}
-  AWS_SECRET: ${env:AWS_SECRET}
-  AWS_USER_POOL_ID: ${env:AWS_USER_POOL_ID}
-  ACCESS_CONTROL_ALLOW_ORIGIN: ${env:ACCESS_CONTROL_ALLOW_ORIGIN}
-
 plugins:
   - serverless-bundle # Package our functions with Webpack
   - serverless-offline
@@ -23,39 +15,21 @@ provider:
   runtime: nodejs10.x
   stage: dev
   region: us-east-1
-  # To load environment variables externally
-  # rename env.example to .env and uncomment
-  # the following line. Also, make sure to not
-  # commit your .env.
-  #
-  #environment:
-  #  SAMPLE_ENV_VAR: ${env:SAMPLE_ENV_VAR}
-# CognitoUserPool:
-#   Type: "AWS::Cognito::UserPool"
-#   Properties:
-#     MfaConfiguration: OFF
-#     UserPoolName: hackOne
-#     UsernameAttributes:
-#       - email
-#     Policies:
-#       PasswordPolicy:
-#         MinimumLength: 8
-#         RequireLowercase: False
-#         RequireNumbers: True
-#         RequireSymbols: False
-#         RequireUppercase: True
-#
-# CognitoUserPoolClient:
-#   Type: "AWS::Cognito::UserPoolClient"
-#   Properties:
-#     ClientName: hackOne
-#     GenerateSecret: False
-#     UserPoolId:
-#       Ref: CognitoUserPool
+
+environment:
+  MONGO_USER: ${env:MONGO_USER}
+  MONGO_PASSWORD: ${env:MONGO_PASSWORD}
+  AWS_ACCESS_KEY_ID: ${env:AWS_ACC_KEY_ID}
+  AWS_SECRET: ${env:AWS_SECRET}
+  AWS_USER_POOL_ID: ${env:AWS_USER_POOL_ID}
+  ACCESS_CONTROL_ALLOW_ORIGIN: ${env:ACCESS_CONTROL_ALLOW_ORIGIN}
+  HOME: ${env:HOME}
 
 custom:
   serverless-offline:
     port: 3001
+  # dotenv:
+  #   path: .env.production
 
 functions:
   edithack:
