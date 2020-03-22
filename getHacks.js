@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 // const HackModel = require("./model/hack");
 
 let conn = null;
-const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
-console.log("mongo user", process.env.MONGO_USER);
+// const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
+// console.log("mongo user", process.env.MONGO_USER);
 /**
  * Lists all Hacks currently stored in the database
  * @param {*} event
@@ -12,7 +12,7 @@ console.log("mongo user", process.env.MONGO_USER);
 export const list = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   if (conn == null) {
-    conn = await mongoose.createConnection(url, {
+    conn = await mongoose.createConnection(process.en.MONGO_DEV_URL, {
       bufferCommands: false,
       bufferMaxEntries: 0
     });
