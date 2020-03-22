@@ -22,4 +22,18 @@ export const auth = async (event, context) => {
   const token = event.authorizationToken;
 
   if (!token) return "Not authorized, no token!!";
+  const tokenParts = event.authorizationToken.split(" ");
+  const tokenValue = tokenParts[1];
+
+  let result = await axios.get(
+    `https://cognito-idp.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_USER_POOL_ID}/.well-known/jwks.json`
+  );
+  const pem = jwkToPem(result.data.keys[1]);
+  try {
+    const decoded = jwt.verify(tokenValue, pem, { algorithm: ["RS256"] });
+
+    return generatePolicy(decoded.sub, "Allow", event.methodArn);
+  } catch (err) {
+    return "token not valid";
+  }
 };
