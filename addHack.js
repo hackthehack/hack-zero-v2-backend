@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+import { pickIfTruthy } from "./utils/";
 let conn = null;
 
 const uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
@@ -7,7 +7,6 @@ const uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@d
 export const add = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const data = JSON.parse(event.body);
-  const { title, description, goal, team } = data;
 
   if (conn == null) {
     conn = await mongoose.createConnection(uri, {
@@ -19,13 +18,20 @@ export const add = async (event, context) => {
     });
     conn.model(
       "Hack",
-      new mongoose.Schema({ title: String, description: String, goal: String, team: Array })
+      new mongoose.Schema({
+        title: { type: String, default: "" },
+        description: { type: String, default: "" },
+        goal: { type: String, default: "" },
+        team: { type: Array, default: [] }
+      })
     );
   }
   const Hack = conn.model("Hack");
 
+  const newIdea = pickIfTruthy(data, "title", "goal", "description");
+
   try {
-    const newHack = new Hack({ title, description, goal, team });
+    const newHack = new Hack(newIdea);
     const query = await newHack.save();
     return {
       statusCode: 200,
@@ -39,6 +45,7 @@ export const add = async (event, context) => {
       })
     };
   } catch (err) {
+    console.log(err);
     return {
       statusCode: 500,
       headers: {
