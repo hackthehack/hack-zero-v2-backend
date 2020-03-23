@@ -7,7 +7,6 @@ const uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@d
 export const add = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const data = JSON.parse(event.body);
-  //const { title, description, goal, team } = data;
 
   if (conn == null) {
     conn = await mongoose.createConnection(uri, {
