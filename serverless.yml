@@ -83,6 +83,7 @@ functions:
           path: joinhack
           method: post
           cors: true
+          authorizer: authorizerFunc
   gethacklist:
     handler: getHacks.list
     events:
