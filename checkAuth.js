@@ -21,7 +21,7 @@ const generatePolicy = (principalId, effect, resource) => {
 export const auth = async (event, context) => {
   const token = event.authorizationToken;
 
-  if (!token) return "Not authorized, no token!!";
+  if (!token) return new Error("Not authorized");
   const tokenParts = event.authorizationToken.split(" ");
   const tokenValue = tokenParts[1];
 
@@ -34,6 +34,6 @@ export const auth = async (event, context) => {
 
     return generatePolicy(decoded.sub, "Allow", event.methodArn);
   } catch (err) {
-    return "token not valid";
+    return new Error("Not authorized");
   }
 };
