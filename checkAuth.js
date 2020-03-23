@@ -26,7 +26,7 @@ export const auth = async (event, context) => {
   const tokenValue = tokenParts[1];
 
   let result = await axios.get(
-    `https://cognito-idp.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_USER_POOL_ID}/.well-known/jwks.json`
+    `https://cognito-idp.${process.env.AWS_REGION_JWK}.amazonaws.com/${process.env.AWS_USER_POOL_ID}/.well-known/jwks.json`
   );
   const pem = jwkToPem(result.data.keys[1]);
   try {
