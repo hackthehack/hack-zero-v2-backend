@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const util = require("./utils");
 let conn = null;
 
 const uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
