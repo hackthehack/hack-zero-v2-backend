@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const util = require("./utils");
+import { pickIfTruthy } from "./utils/";
 let conn = null;
 
 const uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
@@ -7,8 +7,8 @@ const uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@d
 export const add = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const data = JSON.parse(event.body);
-  const { title, description, goal, team } = data;
-  let newIdea = {};
+  //const { title, description, goal, team } = data;
+
   if (conn == null) {
     conn = await mongoose.createConnection(uri, {
       // Buffering means mongoose will queue up operations if it gets
@@ -29,10 +29,7 @@ export const add = async (event, context) => {
   }
   const Hack = conn.model("Hack");
 
-  if (title) newIdea.title = title;
-  if (description) newIdea.description = description;
-  if (goal) newIdea.goal = goal;
-  if (team) newIdea.team = team;
+  const newIdea = pickIfTruthy(data, "title", "goal", "description");
 
   try {
     const newHack = new Hack(newIdea);
