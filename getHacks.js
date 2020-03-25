@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 let conn = null;
 const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
-console.log("mongo user", process.env.MONGO_USER);
+
 /**
  * Lists all Hacks currently stored in the database
  * @param {*} event

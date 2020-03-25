@@ -19,10 +19,12 @@ provider:
 environment:
   MONGO_USER: ${env:MONGO_USER}
   MONGO_PASSWORD: ${env:MONGO_PASSWORD}
+  MONGO_DEV_URL: ${env:MONGO_DEV_URL}
   AWS_ACCESS_KEY_ID: ${env:AWS_ACC_KEY_ID}
   AWS_SECRET: ${env:AWS_SECRET}
   AWS_USER_POOL_ID: ${env:AWS_USER_POOL_ID}
   ACCESS_CONTROL_ALLOW_ORIGIN: ${env:ACCESS_CONTROL_ALLOW_ORIGIN}
+  AWS_REGION_JWK: ${{env:AWS_REGION_JWK}}
   HOME: ${env:HOME}
 
 custom:
@@ -32,6 +34,9 @@ custom:
   #   path: .env.production
 
 functions:
+  authorizerFunc:
+    handler: checkAuth.auth
+
   edithack:
     handler: editHack.edit
     events:
@@ -39,6 +44,8 @@ functions:
           path: edithack
           method: post
           cors: true
+          authorizer: authorizerFunc
+
   authuser:
     handler: authUser.auth
     events:
@@ -67,6 +74,8 @@ functions:
           path: addhack
           method: post
           cors: true
+          authorizer: authorizerFunc
+
   joinhack:
     handler: joinHack.join
     events:
@@ -74,6 +83,7 @@ functions:
           path: joinhack
           method: post
           cors: true
+          authorizer: authorizerFunc
   gethacklist:
     handler: getHacks.list
     events:

@@ -15,10 +15,12 @@
   "devDependencies": {
     "aws-sdk": "^2.636.0",
     "serverless-bundle": "^1.2.5",
-
     "serverless-offline": "^5.3.3"
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "jsonwebtoken": "^8.5.1",
+    "jwk-to-pem": "^2.0.3",
     "mongoose": "^5.9.3",
     "serverless-dotenv-plugin": "^2.1.1"
   }
