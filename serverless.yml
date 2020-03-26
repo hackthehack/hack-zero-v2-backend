@@ -91,3 +91,10 @@ functions:
           path: hacklist
           method: get
           cors: true
+  userhacks:
+    handler: userHacks.list
+    events:
+      - http:
+          path: userhacks/{id}
+          method: get
+          cors: true
