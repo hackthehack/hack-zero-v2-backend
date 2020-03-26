@@ -2,19 +2,30 @@ on:
   push:
     branches:
       - master
+      - github-action-part2
 name: Deploy master branch
 jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
+      - name: Decrypt secret
+        run: ./.github/scripts/decrypt.sh
+        env:
+          SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
+
+      #- uses: actions/checkout@master
       - run: npm install
+      #- run: ls -a $HOME/secrets
       - name: serverless deploy
+
         uses: serverless/github-action@master
         with:
-          args: deploy
+          args: deploy -s production --env production
         env:
           # or if using AWS creds directly
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          NODE_ENV: production
+          HOME: $HOME

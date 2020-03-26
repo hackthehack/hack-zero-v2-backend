@@ -10,6 +10,7 @@ const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@d
  * @param {*} context
  */
 export const list = async (event, context) => {
+  const userid = event.pathParameters.id;
   context.callbackWaitsForEmptyEventLoop = false;
   if (conn == null) {
     conn = await mongoose.createConnection(url, {
@@ -18,18 +19,12 @@ export const list = async (event, context) => {
     });
     conn.model(
       "Hack",
-      new mongoose.Schema({
-        title: String,
-        description: String,
-        goal: String,
-        team: Array
-      })
+      new mongoose.Schema({ title: String, description: String, team: Array })
     );
-    conn.model("User", new mongoose.Schema({ name: String }));
   }
   const Query = conn.model("Hack");
   try {
-    const doc = await Query.find().populate("team", "-email", "User");
+    const doc = await Query.find( { "team": mongoose.Types.ObjectId(userid) } ).select('_id title description');
     return {
       statusCode: 200,
       headers: {
@@ -45,7 +40,7 @@ export const list = async (event, context) => {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: "Uable to fetch hacks data"
+      body: err
     };
   }
 };

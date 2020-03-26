@@ -5,14 +5,6 @@ service: hackOne-api
 package:
   individually: true
 
-environment:
-  MONGO_USER: ${env:MONGO_USER}
-  MONGO_PASSWORD: ${env:MONGO_PASSWORD}
-  AWS_ACCESS_KEY_ID: ${evn:AWS_ACC_KEY_ID}
-  AWS_SECRET: ${evn:AWS_SECRET}
-  AWS_USER_POOL_ID: ${evn:AWS_USER_POOL_ID}
-  ACCESS_CONTROL_ALLOW_ORIGIN: ${evn:ACCESS_CONTROL_ALLOW_ORIGIN}
-
 plugins:
   - serverless-bundle # Package our functions with Webpack
   - serverless-offline
@@ -23,41 +15,37 @@ provider:
   runtime: nodejs10.x
   stage: dev
   region: us-east-1
-  # To load environment variables externally
-  # rename env.example to .env and uncomment
-  # the following line. Also, make sure to not
-  # commit your .env.
-  #
-  #environment:
-  #  SAMPLE_ENV_VAR: ${env:SAMPLE_ENV_VAR}
-# CognitoUserPool:
-#   Type: "AWS::Cognito::UserPool"
-#   Properties:
-#     MfaConfiguration: OFF
-#     UserPoolName: hackOne
-#     UsernameAttributes:
-#       - email
-#     Policies:
-#       PasswordPolicy:
-#         MinimumLength: 8
-#         RequireLowercase: False
-#         RequireNumbers: True
-#         RequireSymbols: False
-#         RequireUppercase: True
-#
-# CognitoUserPoolClient:
-#   Type: "AWS::Cognito::UserPoolClient"
-#   Properties:
-#     ClientName: hackOne
-#     GenerateSecret: False
-#     UserPoolId:
-#       Ref: CognitoUserPool
+
+environment:
+  MONGO_USER: ${env:MONGO_USER}
+  MONGO_PASSWORD: ${env:MONGO_PASSWORD}
+  MONGO_DEV_URL: ${env:MONGO_DEV_URL}
+  AWS_ACCESS_KEY_ID: ${env:AWS_ACC_KEY_ID}
+  AWS_SECRET: ${env:AWS_SECRET}
+  AWS_USER_POOL_ID: ${env:AWS_USER_POOL_ID}
+  ACCESS_CONTROL_ALLOW_ORIGIN: ${env:ACCESS_CONTROL_ALLOW_ORIGIN}
+  AWS_REGION_JWK: ${{env:AWS_REGION_JWK}}
+  HOME: ${env:HOME}
 
 custom:
   serverless-offline:
     port: 3001
+  # dotenv:
+  #   path: .env.production
 
 functions:
+  authorizerFunc:
+    handler: checkAuth.auth
+
+  edithack:
+    handler: editHack.edit
+    events:
+      - http:
+          path: edithack
+          method: post
+          cors: true
+          authorizer: authorizerFunc
+
   authuser:
     handler: authUser.auth
     events:
@@ -86,6 +74,8 @@ functions:
           path: addhack
           method: post
           cors: true
+          authorizer: authorizerFunc
+
   joinhack:
     handler: joinHack.join
     events:
@@ -93,10 +83,18 @@ functions:
           path: joinhack
           method: post
           cors: true
+          authorizer: authorizerFunc
   gethacklist:
     handler: getHacks.list
     events:
       - http:
           path: hacklist
+          method: get
+          cors: true
+  userhacks:
+    handler: userHacks.list
+    events:
+      - http:
+          path: userhacks/{id}
           method: get
           cors: true

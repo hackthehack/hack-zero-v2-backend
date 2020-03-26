@@ -1,20 +1,17 @@
 const mongoose = require("mongoose");
-// const HackModel = require("./model/hack");
-
+import { pickIfTruthy } from "./utils";
 let conn = null;
 const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
 
-/**
- * Lists all Hacks currently stored in the database
- * @param {*} event
- * @param {*} context
- */
-export const list = async (event, context) => {
+export const edit = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
+  const data = JSON.parse(event.body);
+  const { hackId } = data;
+
   if (conn == null) {
     conn = await mongoose.createConnection(url, {
-      bufferCommands: false,
-      bufferMaxEntries: 0
+      bufferCommands: false, // Disable mongoose buffering
+      bufferMaxEntries: 0 // and MongoDB driver buffering
     });
     conn.model(
       "Hack",
@@ -22,30 +19,40 @@ export const list = async (event, context) => {
         title: String,
         description: String,
         goal: String,
-        team: Array
+        team: Array,
+        teamName: String
       })
     );
     conn.model("User", new mongoose.Schema({ name: String }));
   }
-  const Query = conn.model("Hack");
+
+  const Hack = conn.model("Hack");
+
+  const update = pickIfTruthy(data, "goal", "title", "description", "teamName");
+
   try {
-    const doc = await Query.find().populate("team", "-email", "User");
+    const result = await Hack.findByIdAndUpdate(hackId, update, {
+      new: true
+    }).populate("team", "name", "User");
+
+    console.log(result);
     return {
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: JSON.stringify(doc)
+      body: JSON.stringify(result)
     };
   } catch (err) {
+    console.log(err.message);
     return {
       statusCode: 500,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: "Uable to fetch hacks data"
+      body: "Uable to update hack detail"
     };
   }
 };
