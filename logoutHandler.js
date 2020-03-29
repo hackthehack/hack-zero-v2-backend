@@ -13,4 +13,27 @@ const COGNITO_CLIENT = new AWS.CognitoIdentityServiceProvider({
 const utilPromiseAdminLogout = promisify(
   COGNITO_CLIENT.adminUserGlobalSignOut
 ).bind(COGNITO_CLIENT);
-export const logout = async (event, context) => {};
+
+export const logout = async (event, context) => {
+  const data = JSON.parse(event.body);
+  //console.log(data);
+  const { email } = data;
+  const userParams = {
+    UserPoolId: process.env.AWS_USER_POOL_ID /* required */,
+    Username: email
+  };
+  try {
+    let result = await utilPromiseAdminLogout(userParams);
+    console.log(result);
+    return {
+      statusCode: 200,
+      body: "logge out"
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      statusCode: 500,
+      body: "unable to logout"
+    };
+  }
+};
