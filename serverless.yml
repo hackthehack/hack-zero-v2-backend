@@ -37,6 +37,14 @@ functions:
   authorizerFunc:
     handler: checkAuth.auth
 
+  logout:
+    handler: logoutHandler.logout
+    events:
+      - http:
+          path: logout
+          method: post
+          cors: true
+
   edithack:
     handler: editHack.edit
     events:
