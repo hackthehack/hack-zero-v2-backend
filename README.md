@@ -2,6 +2,31 @@
 
 API endpoints that connect to the fronted client for HackZero. Purpose of this is to manage hackathon event for any organizations.
 
+## Functionality / Features
+
+- User registration
+- User authentication
+- Adding hackathon ideas
+- Editing hackathon ideas
+- Providing users created hacks listing
+- Join team to work on hacks
+
+## Target Audience
+
+This backend app is targeted at people who needs to connect their frontend client to be able to perform CRUD operation for their hackathons within their organizatios.
+
+## Tech Stack
+
+- MongoDB
+- AWS API Gateway
+- AWS Lambda
+- AWS Cognito Authentication
+- Serverless Framework
+
+## Application Architecture Diagram
+
+![diagram](./docs/architectureDiagram.png)
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
