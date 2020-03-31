@@ -27,7 +27,7 @@ export const logout = async (event, context) => {
     console.log(result);
     return {
       statusCode: 200,
-      body: "logge out"
+      body: "logged out"
     };
   } catch (err) {
     console.log(err);
