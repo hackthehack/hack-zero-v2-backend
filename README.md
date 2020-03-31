@@ -110,6 +110,26 @@ $ npm test
 
 We use Jest to run our tests. You can read more about setting up your tests [here](https://facebook.github.io/jest/docs/en/getting-started.html#content)
 
+#### Deployment
+
+1. Deploy locally with:
+
+```bash
+$ serverless deploy
+```
+
+2. Deploy only one function:
+
+```bash
+$ serverless deploy function --function hello
+```
+
+3. Deploy with github actions
+
+Please swap out your cloud provider details in **serverless.yml** and also in **./github/workflows/main.yml**.
+
+For more information please visit: [info](https://github.com/features/actions)
+
 ## Authors
 
 - **Stanley Huang**
