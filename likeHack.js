@@ -60,7 +60,7 @@ export const like = async (event, context) => {
             process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
           "Access-Control-Allow-Credentials": true
         },
-        body: "Like route"
+        body: "Liked a hack"
       };
     } catch (err) {
       console.log(err);
@@ -88,7 +88,7 @@ export const like = async (event, context) => {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: "Like route"
+      body: "unLiked a hack"
     };
   } catch (err) {
     console.log(err);
