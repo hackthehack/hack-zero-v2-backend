@@ -33,12 +33,20 @@ export const like = async (event, context) => {
     console.log("user hasn't liked it yet");
     result = await Hack.findOneAndUpdate(
       { _id: hackId },
-      { $push: { likes: mongoose.Types.ObjectId(userId) } }
+      { $push: { likes: mongoose.Types.ObjectId(userId) } },
+      {
+        new: true
+      }
     );
   } else {
     console.log("user already liked it");
+    result = await Hack.findOneAndUpdate(
+      { _id: hackId },
+      { $pull: { likes: mongoose.Types.ObjectId(userId) } },
+      { new: true }
+    );
   }
-
+  console.log(result);
   return {
     statusCode: 200,
     body: "Like route"
