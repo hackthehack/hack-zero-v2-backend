@@ -37,6 +37,15 @@ functions:
   authorizerFunc:
     handler: checkAuth.auth
 
+  likehack:
+    handler: likeHack.like
+    events:
+      - http:
+          path: likehack
+          method: post
+          cors: true
+          authorizer: authorizerFunc
+
   edithack:
     handler: editHack.edit
     events:
