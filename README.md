@@ -43,26 +43,6 @@ These instructions will get you a copy of the project up and running on your loc
 
 2. Install serverless framework by running **npm install -g serverless**
 
-### Installing
-
-To create a new Serverless project.
-
-```bash
-$ serverless install --url https://github.com/AnomalyInnovations/serverless-nodejs-starter --name my-project
-```
-
-Enter the new directory
-
-```bash
-$ cd my-project
-```
-
-Install the Node.js packages
-
-```bash
-$ npm install
-```
-
 ### Demo
 
 A demo version of this service is hosted on AWS - [`https://z6pv80ao4l.execute-api.us-east-1.amazonaws.com/dev/hello`](https://z6pv80ao4l.execute-api.us-east-1.amazonaws.com/dev/hello)
