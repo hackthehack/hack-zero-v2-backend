@@ -21,16 +21,24 @@ export const like = async (event, context) => {
     conn.model(
       "Hack",
       new mongoose.Schema({
-        likes: [mongoose.ObjectId]
+        likes: { type: [mongoose.ObjectId], default: [] }
       })
     );
   }
   const Hack = conn.model("Hack");
-  let result = await Hack.findOneAndUpdate(
-    { _id: hackId },
-    { $push: { likes: mongoose.Types.ObjectId(userId) } }
-  );
-  console.log(result);
+  const likesArray = await Hack.findOne({ _id: hackId }, "likes");
+  let result;
+
+  if (!likesArray.likes.find(id => id.toString() === userId)) {
+    console.log("user hasn't liked it yet");
+    result = await Hack.findOneAndUpdate(
+      { _id: hackId },
+      { $push: { likes: mongoose.Types.ObjectId(userId) } }
+    );
+  } else {
+    console.log("user already liked it");
+  }
+
   return {
     statusCode: 200,
     body: "Like route"
