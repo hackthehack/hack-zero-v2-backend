@@ -26,29 +26,79 @@ export const like = async (event, context) => {
     );
   }
   const Hack = conn.model("Hack");
-  const likesArray = await Hack.findOne({ _id: hackId }, "likes");
+  let likesArray;
   let result;
 
+  try {
+    likesArray = await Hack.findOne({ _id: hackId }, "likes");
+  } catch (err) {
+    console.log(err);
+    return {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: "Uable to like hack"
+    };
+  }
+  //console.log("user hasn't liked it yet");
+
   if (!likesArray.likes.find(id => id.toString() === userId)) {
-    console.log("user hasn't liked it yet");
-    result = await Hack.findOneAndUpdate(
-      { _id: hackId },
-      { $push: { likes: mongoose.Types.ObjectId(userId) } },
-      {
-        new: true
-      }
-    );
-  } else {
-    console.log("user already liked it");
+    try {
+      result = await Hack.findOneAndUpdate(
+        { _id: hackId },
+        { $push: { likes: mongoose.Types.ObjectId(userId) } },
+        {
+          new: true
+        }
+      );
+      return {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin":
+            process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+          "Access-Control-Allow-Credentials": true
+        },
+        body: "Like route"
+      };
+    } catch (err) {
+      console.log(err);
+      return {
+        statusCode: 500,
+        headers: {
+          "Access-Control-Allow-Origin":
+            process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+          "Access-Control-Allow-Credentials": true
+        },
+        body: "Uable to like hack"
+      };
+    }
+  }
+  //"user already liked it");
+  try {
     result = await Hack.findOneAndUpdate(
       { _id: hackId },
       { $pull: { likes: mongoose.Types.ObjectId(userId) } },
       { new: true }
     );
+    return {
+      statusCode: 200,
+      eaders: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: "Like route"
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: "Uable to like hack"
+    };
   }
-  console.log(result);
-  return {
-    statusCode: 200,
-    body: "Like route"
-  };
 };
