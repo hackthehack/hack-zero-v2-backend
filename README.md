@@ -141,6 +141,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/josephgarner"><img src="https://avatars0.githubusercontent.com/u/24267716?v=4" width="100px;" alt=""/><br /><sub><b>Joseph Garner</b></sub></a><br /><a href="https://github.com/hackthehack/hack-zero-v2-backend/commits?author=josephgarner" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/jpeyper"><img src="https://avatars2.githubusercontent.com/u/6560018?v=4" width="100px;" alt=""/><br /><sub><b>Jonathan Peyper</b></sub></a><br /><a href="https://github.com/hackthehack/hack-zero-v2-backend/commits?author=jpeyper" title="Code">💻</a></td>
+    <td align="center"><a href="https://au.linkedin.com/in/danieltongaus"><img src="https://avatars3.githubusercontent.com/u/1935231?v=4" width="100px;" alt=""/><br /><sub><b>Daniel Tong</b></sub></a><br /><a href="https://github.com/hackthehack/hack-zero-v2-backend/commits?author=danieltongaus" title="Code">💻</a></td>
   </tr>
 </table>
 
