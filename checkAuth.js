@@ -1,17 +1,6 @@
 import jwt from "jsonwebtoken";
 import axios from "axios";
 import jwkToPem from "jwk-to-pem";
-import {
-  CognitoUserPool,
-  CognitoUserAttribute,
-  CognitoUser
-} from "amazon-cognito-identity-js";
-
-const poolData = {
-  UserPoolId: process.env.AWS_USER_POOL_ID, // Your user pool id here
-  ClientId: process.en.AWS_USER_Client_ID // Your client id here
-};
-const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
 const generatePolicy = (principalId, effect, resource) => {
   const authResponse = {};
@@ -40,6 +29,7 @@ export const auth = async (event, context) => {
     `https://cognito-idp.${process.env.AWS_REGION_JWK}.amazonaws.com/${process.env.AWS_USER_POOL_ID}/.well-known/jwks.json`
   );
   const pem = jwkToPem(result.data.keys[1]);
+
   try {
     const decoded = jwt.verify(tokenValue, pem, { algorithm: ["RS256"] });
 
