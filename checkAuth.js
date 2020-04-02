@@ -1,6 +1,17 @@
 import jwt from "jsonwebtoken";
 import axios from "axios";
 import jwkToPem from "jwk-to-pem";
+import {
+  CognitoUserPool,
+  CognitoUserAttribute,
+  CognitoUser
+} from "amazon-cognito-identity-js";
+
+const poolData = {
+  UserPoolId: process.env.AWS_USER_POOL_ID, // Your user pool id here
+  ClientId: process.en.AWS_USER_Client_ID // Your client id here
+};
+const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
 const generatePolicy = (principalId, effect, resource) => {
   const authResponse = {};
