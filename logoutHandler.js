@@ -1,5 +1,8 @@
 import AWS from "aws-sdk";
 import util from "util";
+import jwt from "jsonwebtoken";
+import axios from "axios";
+import jwkToPem from "jwk-to-pem";
 const { promisify } = util;
 
 AWS.config.update({
@@ -17,11 +20,18 @@ const utilPromiseAdminLogout = promisify(
 export const logout = async (event, context) => {
   const data = JSON.parse(event.body);
   //console.log(data);
-  const { email } = data;
+  const { token } = data;
+
+  let result = await axios.get(
+    `https://cognito-idp.${process.env.AWS_REGION_JWK}.amazonaws.com/${process.env.AWS_USER_POOL_ID}/.well-known/jwks.json`
+  );
+  const pem = jwkToPem(result.data.keys[1]);
+  const decoded = jwt.verify(token, pem, { algorithm: ["RS256"] });
   const userParams = {
     UserPoolId: process.env.AWS_USER_POOL_ID /* required */,
-    Username: email
+    Username: decoded.username
   };
+
   try {
     let result = await utilPromiseAdminLogout(userParams);
     console.log(result);
