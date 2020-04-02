@@ -1,0 +1,44 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "josephgarner",
+      "name": "Joseph Garner",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/24267716?v=4",
+      "profile": "https://github.com/josephgarner",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "jpeyper",
+      "name": "Jonathan Peyper",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/6560018?v=4",
+      "profile": "https://github.com/jpeyper",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+
+      "login": "HuangStanley050",
+      "name": "Stanley Huang",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/33140495?v=4",
+      "profile": "https://github.com/HuangStanley050",
+
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "hack-zero-v2-backend",
+  "projectOwner": "hackthehack",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
