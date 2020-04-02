@@ -43,6 +43,9 @@ export const detail = async (event, context) => {
 
   try {
     let result = await Hack.findById(id).populate("team", "-email", "User");
+    result = result.toObject();
+    result.hasUserLiked = hasUserLiked;
+    console.log(result);
     return {
       statusCode: 200,
       headers: {
