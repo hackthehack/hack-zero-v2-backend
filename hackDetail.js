@@ -13,7 +13,7 @@ export const detail = async (event, context) => {
     });
     conn.model(
       "Hack",
-      new mongoose.Schema({ title: String, description: String, goal: String, team: Array })
+      new mongoose.Schema({ title: String, description: String, goal: String, creator: String, team: Array })
     );
     conn.model("User", new mongoose.Schema({ name: String, email: String }));
   }
@@ -21,7 +21,7 @@ export const detail = async (event, context) => {
 
   try {
 
-    let result = await Hack.findById(id).populate('team', '-email', 'User');
+    let result = await Hack.findById(id).populate('team', '-email', 'User').populate('creator', '-email', 'User');
     return {
       statusCode: 200,
       headers: {
