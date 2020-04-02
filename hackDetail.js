@@ -32,9 +32,7 @@ export const detail = async (event, context) => {
   if (userId !== "null") {
     //that means user is logged in and we have his id
 
-    let result = await Hack.findById(id, {
-      likes: mongoose.Types.ObjectId(userId)
-    });
+    let result = await Hack.findById(id);
 
     if (result.likes.find(id => id.toString() === userId)) {
       hasUserLiked = true;
@@ -42,10 +40,12 @@ export const detail = async (event, context) => {
   }
 
   try {
-    let result = await Hack.findById(id).populate("team", "-email", "User");
+    let result = await Hack.findById(id)
+      .select("-likes")
+      .populate("team", "-email", "User");
     result = result.toObject();
     result.hasUserLiked = hasUserLiked;
-    console.log(result);
+    //console.log(result);
     return {
       statusCode: 200,
       headers: {
