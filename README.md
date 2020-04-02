@@ -1,27 +1,47 @@
-# Serverless Node.js Starter
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+# HackZero API
 
-A Serverless starter that adds ES7 syntax, serverless-offline, linting, environment variables, and unit test support. Part of the [Serverless Stack](http://serverless-stack.com) guide.
+API endpoints that connect to the fronted client for HackZero. Purpose of this is to manage hackathon event for any organizations.
 
-[Serverless Node.js Starter](https://github.com/AnomalyInnovations/serverless-nodejs-starter) uses the [serverless-bundle](https://github.com/AnomalyInnovations/serverless-bundle) plugin (an extension of the [serverless-webpack](https://github.com/serverless-heaven/serverless-webpack) plugin) and the [serverless-offline](https://github.com/dherault/serverless-offline) plugin. It supports:
+## Functionality / Features
 
-- **Generating optimized Lambda packages with Webpack**
-- **Use ES7 syntax in your handler functions**
-  - Use `import` and `export`
-- **Run API Gateway locally**
-  - Use `serverless offline start`
-- **Support for unit tests**
-  - Run `npm test` to run your tests
-- **Sourcemaps for proper error messages**
-  - Error message show the correct line numbers
-  - Works in production with CloudWatch
-- **Lint your code with ESLint**
-- **Add environment variables for your stages**
-- **No need to manage Webpack or Babel configs**
+- User registration
+- User authentication
+- Adding hackathon ideas
+- Editing hackathon ideas
+- Providing users created hacks listing
+- Join team to work on hacks
 
----
+## Target Audience
+
+This backend app is targeted at people who needs to connect their frontend client to be able to perform CRUD operation for their hackathons within their organizatios.
+
+## Tech Stack
+
+- MongoDB
+- AWS API Gateway
+- AWS Lambda
+- AWS Cognito Authentication
+- Serverless Framework
+
+## Application Architecture Diagram
+
+![diagram](./docs/architectureDiagram.png)
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+1. **git clone git@github.com:hackthehack/hack-zero-v2-backend.git**
+
+2. cd into the directory and run **npm install**
+
+3. Run a local server by running '**sls offline start**'
+
+### Prerequisites
+
+1. Must have NodeJS runtime installed
+
+2. Install serverless framework by running **npm install -g serverless**
 
 ### Demo
 
@@ -29,88 +49,27 @@ A demo version of this service is hosted on AWS - [`https://z6pv80ao4l.execute-a
 
 And here is the ES7 source behind it
 
-``` javascript
+```javascript
 export const hello = async (event, context) => {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: `Go Serverless v1.0! ${(await message({ time: 1, copy: 'Your function executed successfully!'}))}`,
-      input: event,
-    }),
+      message: `Go Serverless v1.0! ${await message({
+        time: 1,
+        copy: "Your function executed successfully!"
+      })}`,
+      input: event
+    })
   };
 };
 
-const message = ({ time, ...rest }) => new Promise((resolve, reject) =>
-  setTimeout(() => {
-    resolve(`${rest.copy} (with a delay)`);
-  }, time * 1000)
-);
+const message = ({ time, ...rest }) =>
+  new Promise((resolve, reject) =>
+    setTimeout(() => {
+      resolve(`${rest.copy} (with a delay)`);
+    }, time * 1000)
+  );
 ```
-
-### Upgrading from v1.x
-
-We have detailed instructions on how to upgrade your app to the v2.0 of the starter if you were using v1.x before. [Read about it here](https://github.com/AnomalyInnovations/serverless-nodejs-starter/releases/tag/v2.0).
-
-### Requirements
-
-- [Install the Serverless Framework](https://serverless.com/framework/docs/providers/aws/guide/installation/)
-- [Configure your AWS CLI](https://serverless.com/framework/docs/providers/aws/guide/credentials/)
-
-### Installation
-
-To create a new Serverless project.
-
-``` bash
-$ serverless install --url https://github.com/AnomalyInnovations/serverless-nodejs-starter --name my-project
-```
-
-Enter the new directory
-
-``` bash
-$ cd my-project
-```
-
-Install the Node.js packages
-
-``` bash
-$ npm install
-```
-
-### Usage
-
-To run a function on your local
-
-``` bash
-$ serverless invoke local --function hello
-```
-
-To simulate API Gateway locally using [serverless-offline](https://github.com/dherault/serverless-offline)
-
-``` bash
-$ serverless offline start
-```
-
-Deploy your project
-
-``` bash
-$ serverless deploy
-```
-
-Deploy a single function
-
-``` bash
-$ serverless deploy function --function hello
-```
-
-#### Running Tests
-
-Run your tests using
-
-``` bash
-$ npm test
-```
-
-We use Jest to run our tests. You can read more about setting up your tests [here](https://facebook.github.io/jest/docs/en/getting-started.html#content).
 
 #### Environment Variables
 
@@ -121,28 +80,35 @@ To add environment variables to your project
 3. Uncomment `environment:` block in the `serverless.yml` and reference the environment variable as `${env:MY_ENV_VAR}`. Where `MY_ENV_VAR` is added to your `.env` file.
 4. Make sure to not commit your `.env`.
 
-#### Linting
+#### Running Tests
 
-We use [ESLint](https://eslint.org) to lint your code via the [serverless-bundle](https://github.com/AnomalyInnovations/serverless-bundle) plugin.
+Run your tests using
 
-You can turn this off by adding the following to your `serverless.yml`.
-
-``` yaml
-custom:
-  bundle:
-    linting: false
+```bash
+$ npm test
 ```
 
-To [override the default config](https://eslint.org/docs/user-guide/configuring), add a `.eslintrc.json` file. To ignore ESLint for specific files, add it to a `.eslintignore` file.
+We use Jest to run our tests. You can read more about setting up your tests [here](https://facebook.github.io/jest/docs/en/getting-started.html#content)
 
-### Support
+#### Deployment
 
-- Open a [new issue](https://github.com/AnomalyInnovations/serverless-nodejs-starter/issues/new) if you've found a bug or have some suggestions.
-- Or submit a pull request!
+1. Deploy locally with:
 
----
+```bash
+$ serverless deploy
+```
 
-This repo is maintained by [Anomaly Innovations](https://anoma.ly); makers of [Seed](https://seed.run) and [Serverless Stack](https://serverless-stack.com).
+2. Deploy only one function:
+
+```bash
+$ serverless deploy function --function hello
+```
+
+3. Deploy with github actions
+
+Please swap out your cloud provider details in **serverless.yml** and also in **./github/workflows/main.yml**.
+
+For more information please visit: [info](https://github.com/features/actions)
 
 ## Contributors ✨
 
@@ -155,14 +121,14 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/josephgarner"><img src="https://avatars0.githubusercontent.com/u/24267716?v=4" width="100px;" alt=""/><br /><sub><b>Joseph Garner</b></sub></a><br /><a href="https://github.com/hackthehack/hack-zero-v2-backend/commits?author=josephgarner" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/jpeyper"><img src="https://avatars2.githubusercontent.com/u/6560018?v=4" width="100px;" alt=""/><br /><sub><b>Jonathan Peyper</b></sub></a><br /><a href="https://github.com/hackthehack/hack-zero-v2-backend/commits?author=jpeyper" title="Code">💻</a></td>
-
     <td align="center"><a href="https://github.com/HuangStanley050"><img src="https://avatars0.githubusercontent.com/u/33140495?v=4" width="100px;" alt=""/><br /><sub><b>Stanley Huang</b></sub></a><br /><a href="https://github.com/hackthehack/hack-zero-v2-backend/commits?author=HuangStanley050" title="Code">💻</a></td>
-
+    <td align="center"><a href="https://au.linkedin.com/in/danieltongaus"><img src="https://avatars3.githubusercontent.com/u/1935231?v=4" width="100px;" alt=""/><br /><sub><b>Daniel Tong</b></sub></a><br /><a href="https://github.com/hackthehack/hack-zero-v2-backend/commits?author=danieltongaus" title="Code">💻</a></td>
   </tr>
 </table>
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
