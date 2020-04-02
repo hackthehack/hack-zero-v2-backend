@@ -16,6 +16,7 @@ export const detail = async (event, context) => {
     });
     conn.model(
       "Hack",
+
       new mongoose.Schema({
         title: String,
         description: String,
@@ -23,6 +24,7 @@ export const detail = async (event, context) => {
         team: Array,
         likes: [mongoose.ObjectId]
       })
+
     );
     conn.model("User", new mongoose.Schema({ name: String, email: String }));
   }
@@ -46,6 +48,7 @@ export const detail = async (event, context) => {
     result = result.toObject();
     result.hasUserLiked = hasUserLiked;
     //console.log(result);
+
     return {
       statusCode: 200,
       headers: {
