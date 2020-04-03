@@ -16,7 +16,6 @@ export const detail = async (event, context) => {
     });
     conn.model(
       "Hack",
-<<<<<<< HEAD
       new mongoose.Schema({
         title: String,
         description: String,
@@ -24,9 +23,6 @@ export const detail = async (event, context) => {
         team: Array,
         likes: [mongoose.ObjectId]
       })
-=======
-      new mongoose.Schema({ title: String, description: String, goal: String, creator: String, team: Array })
->>>>>>> master
     );
     conn.model("User", new mongoose.Schema({ name: String, email: String }));
   }
@@ -38,7 +34,6 @@ export const detail = async (event, context) => {
 
     let result = await Hack.findById(id);
 
-<<<<<<< HEAD
     if (result.likes.find(id => id.toString() === userId)) {
       hasUserLiked = true;
     }
@@ -51,9 +46,7 @@ export const detail = async (event, context) => {
     result = result.toObject();
     result.hasUserLiked = hasUserLiked;
     //console.log(result);
-=======
-    let result = await Hack.findById(id).populate('team', '-email', 'User').populate('creator', '-email', 'User');
->>>>>>> master
+
     return {
       statusCode: 200,
       headers: {
