@@ -28,12 +28,13 @@ export const detail = async (event, context) => {
   }
   const Hack = conn.model("Hack");
   let hasUserLiked = false;
+  let numberLikes = 0;
 
   if (userId !== "null") {
     //that means user is logged in and we have his id
 
     let result = await Hack.findById(id);
-
+    numberLikes = result.likes.length;
     if (result.likes.find(id => id.toString() === userId)) {
       hasUserLiked = true;
     }
@@ -45,6 +46,7 @@ export const detail = async (event, context) => {
       .populate("team", "-email", "User");
     result = result.toObject();
     result.hasUserLiked = hasUserLiked;
+    result.numberLikes = numberLikes;
     //console.log(result);
 
     return {
