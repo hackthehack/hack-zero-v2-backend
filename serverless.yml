@@ -35,10 +35,10 @@ custom:
 
 functions:
   authorizerFunc:
-    handler: checkAuth.auth
+    handler: ./services/auth/checkAuth.auth
 
   edithack:
-    handler: editHack.edit
+    handler: ./services/hack/editHack.edit
     events:
       - http:
           path: edithack
@@ -47,28 +47,28 @@ functions:
           authorizer: authorizerFunc
 
   authuser:
-    handler: authUser.auth
+    handler: ./services/auth/authUser.auth
     events:
       - http:
           path: auth
           method: post
           cors: true
   registeruser:
-    handler: registerUser.register
+    handler: ./services/auth/registerUser.register
     events:
       - http:
           path: register
           method: post
           cors: true
   hackdetail:
-    handler: hackDetail.detail
+    handler: ./services/hack/hackDetail.detail
     events:
       - http:
           path: hackdetail/{id}
           method: get
           cors: true
   addhack:
-    handler: addHack.add
+    handler: ./services/hack/addHack.add
     events:
       - http:
           path: addhack
@@ -77,7 +77,7 @@ functions:
           authorizer: authorizerFunc
 
   joinhack:
-    handler: joinHack.join
+    handler: ./services/hack/joinHack.join
     events:
       - http:
           path: joinhack
@@ -85,14 +85,14 @@ functions:
           cors: true
           authorizer: authorizerFunc
   gethacklist:
-    handler: getHacks.list
+    handler: ./services/hack/getHacks.list
     events:
       - http:
           path: hacklist
           method: get
           cors: true
   userhacks:
-    handler: userHacks.list
+    handler: ./services/hack/userHacks.list
     events:
       - http:
           path: userhacks/{id}

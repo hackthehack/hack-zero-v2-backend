@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-import { pickIfTruthy } from "./utils/";
+import { pickIfTruthy } from "../../utils/";
 let conn = null;
 
 const uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
@@ -30,7 +30,14 @@ export const add = async (event, context) => {
   }
   const Hack = conn.model("Hack");
 
-  const newIdea = pickIfTruthy(data, "title", "goal", "description", "creator", "team");
+  const newIdea = pickIfTruthy(
+    data,
+    "title",
+    "goal",
+    "description",
+    "creator",
+    "team"
+  );
   console.log(newIdea);
 
   try {
