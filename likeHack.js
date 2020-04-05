@@ -21,7 +21,8 @@ export const like = async (event, context) => {
     conn.model(
       "Hack",
       new mongoose.Schema({
-        likes: { type: [mongoose.ObjectId], default: [] }
+        likes: { type: [mongoose.ObjectId], default: [] },
+        numberLikes: { default: 0, type: Number }
       })
     );
   }
@@ -48,7 +49,10 @@ export const like = async (event, context) => {
     try {
       result = await Hack.findOneAndUpdate(
         { _id: hackId },
-        { $push: { likes: mongoose.Types.ObjectId(userId) } },
+        {
+          $push: { likes: mongoose.Types.ObjectId(userId) },
+          $inc: { numberLikes: 1 }
+        },
         {
           new: true
         }
@@ -79,7 +83,10 @@ export const like = async (event, context) => {
   try {
     result = await Hack.findOneAndUpdate(
       { _id: hackId },
-      { $pull: { likes: mongoose.Types.ObjectId(userId) } },
+      {
+        $pull: { likes: mongoose.Types.ObjectId(userId) },
+        $inc: { numberLikes: -1 }
+      },
       { new: true }
     );
     return {
