@@ -13,6 +13,7 @@ export const like = async (event, context) => {
   const data = JSON.parse(event.body);
   const { hackId, userId } = data;
 
+  //console.log(event.requestContext.authorizer.customKey);
   if (conn == null) {
     conn = await mongoose.createConnection(uri, {
       bufferCommands: false,
@@ -21,15 +22,14 @@ export const like = async (event, context) => {
     conn.model(
       "Hack",
       new mongoose.Schema({
-        likes: { type: [mongoose.ObjectId], default: [] },
-        numberLikes: { default: 0, type: Number }
+        likes: { type: [mongoose.ObjectId], default: [] }
       })
     );
   }
   const Hack = conn.model("Hack");
   let likesArray;
   let result;
-
+  let numberLikes;
   try {
     likesArray = await Hack.findOne({ _id: hackId }, "likes");
   } catch (err) {
@@ -50,9 +50,13 @@ export const like = async (event, context) => {
       result = await Hack.findOneAndUpdate(
         { _id: hackId },
         {
+          $push: { likes: mongoose.Types.ObjectId(userId) }
+        },
+        {
           new: true
         }
       );
+      numberLikes = result.likes.length;
       return {
         statusCode: 200,
         headers: {
@@ -60,7 +64,7 @@ export const like = async (event, context) => {
             process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
           "Access-Control-Allow-Credentials": true
         },
-        body: "Liked a hack"
+        body: JSON.stringify({ numberLikes })
       };
     } catch (err) {
       console.log(err);
@@ -82,13 +86,14 @@ export const like = async (event, context) => {
       { $pull: { likes: mongoose.Types.ObjectId(userId) } },
       { new: true }
     );
+    numberLikes = result.likes.length;
     return {
       statusCode: 200,
       eaders: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: "unLiked a hack"
+      body: JSON.stringify({ numberLikes })
     };
   } catch (err) {
     console.log(err);
