@@ -37,6 +37,15 @@ functions:
   authorizerFunc:
     handler: checkAuth.auth
 
+  dislikehack:
+    handler: dislikeHack.dislike
+    events:
+      - http:
+          path: dislikehack
+          method: post
+          cors: true
+          authorizer: authorizerFunc
+
   likehack:
     handler: likeHack.like
     events:
