@@ -23,11 +23,12 @@ export const dislike = async (event, context) => {
   }
   const Hack = conn.model("Hack");
   const User = conn.model("User");
-
+  let result;
+  let numberLikes;
   //check if the given userId exists
   try {
     let user = await User.findById(userId);
-    console.log(user);
+    //console.log(user);
   } catch (err) {
     console.log(err);
     return {

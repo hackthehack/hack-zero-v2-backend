@@ -29,22 +29,9 @@ export const like = async (event, context) => {
   }
   const Hack = conn.model("Hack");
   const User = conn.model("User");
-  let likesArray;
+  //let likesArray;
   let result;
   let numberLikes;
-  try {
-    likesArray = await Hack.findOne({ _id: hackId }, "likes");
-  } catch (err) {
-    console.log(err);
-    return {
-      statusCode: 500,
-      headers: {
-        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-        "Access-Control-Allow-Credentials": true
-      },
-      body: "Unable to like hack"
-    };
-  }
 
   //check if the given userId exists
   try {
