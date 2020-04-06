@@ -98,3 +98,11 @@ functions:
           path: userhacks/{id}
           method: get
           cors: true
+  submitHack:
+    handler: submitHack.submit
+    events:
+      - http:
+          path: submit
+          method: post
+          cors: true
+          authorizer: authorizerFunc
