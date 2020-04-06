@@ -40,7 +40,7 @@ export const like = async (event, context) => {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: "Uable to like hack"
+      body: "Unable to like hack"
     };
   }
   //console.log("user hasn't liked it yet");

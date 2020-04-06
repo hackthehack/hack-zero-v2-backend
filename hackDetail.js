@@ -30,14 +30,23 @@ export const detail = async (event, context) => {
   let hasUserLiked = false;
   let numberLikes = 0;
 
-  if (userId !== "null") {
-    //that means user is logged in and we have his id
-
+  // showing number of likes regardless if user is logged in
+  // if user is logged in, find out if he liked it or not
+  try {
     let result = await Hack.findById(id);
     numberLikes = result.likes.length;
-    if (result.likes.find(id => id.toString() === userId)) {
-      hasUserLiked = true;
-    }
+
+    hasUserLiked = result.likes.find(id => id.toString() === userId);
+  } catch (err) {
+    console.log(err);
+    return {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: err.message
+    };
   }
 
   try {
