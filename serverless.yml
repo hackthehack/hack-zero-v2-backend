@@ -106,3 +106,10 @@ functions:
           method: post
           cors: true
           authorizer: authorizerFunc
+  getSubmission:
+    handler: getSubmission.submissionDetails
+    events:
+      - http:
+          path: submissionDetails/{id}
+          method: get
+          cors: true

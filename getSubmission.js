@@ -1,21 +1,16 @@
 const mongoose = require("mongoose");
-import { pickIfTruthy } from "./utils";
+
 let conn = null;
 const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
 
-export const submit = async (event, context) => {
+export const submissionDetails = async (event, context) => {
+  const id = event.pathParameters.id;
   context.callbackWaitsForEmptyEventLoop = false;
-  const data = JSON.parse(event.body);
-  let { submissionId } = data;
-
   if (conn == null) {
     conn = await mongoose.createConnection(url, {
-      bufferCommands: false, // Disable mongoose buffering
-      bufferMaxEntries: 0 // and MongoDB driver buffering
+      bufferCommands: false,
+      bufferMaxEntries: 0
     });
-    if(!submissionId){
-      submissionId = new mongoose.mongo.ObjectID();
-    }
     conn.model(
       "submission",
       new mongoose.Schema({
@@ -24,15 +19,11 @@ export const submit = async (event, context) => {
       })
     );
   }
+  const query = conn.model("submission");
 
-  const Submission = conn.model("submission");
-
-  const submit = pickIfTruthy(data, "hackId", "message");
   try {
-    const result = await Submission.findByIdAndUpdate(submissionId, submit, {
-      new: true,
-      upsert: true
-    });
+
+    let result = await query.findOne({ hackId: id})
     return {
       statusCode: 200,
       headers: {
@@ -42,14 +33,13 @@ export const submit = async (event, context) => {
       body: JSON.stringify(result)
     };
   } catch (err) {
-    console.log(err.message);
     return {
       statusCode: 500,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: "Uable to update hack detail"
+      body: err.message
     };
   }
 };
