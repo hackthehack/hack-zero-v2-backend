@@ -25,8 +25,10 @@ export const like = async (event, context) => {
         likes: { type: [mongoose.ObjectId], default: [] }
       })
     );
+    conn.model("User", new mongoose.Schema({ name: String }));
   }
   const Hack = conn.model("Hack");
+  const User = conn.model("User");
   let likesArray;
   let result;
   let numberLikes;
@@ -43,6 +45,23 @@ export const like = async (event, context) => {
       body: "Unable to like hack"
     };
   }
+
+  //check if the given userId exists
+  try {
+    let user = await User.findById(userId);
+    console.log(user);
+  } catch (err) {
+    console.log(err);
+    return {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
+      body: "Uable to like hack"
+    };
+  }
+
   //console.log("user hasn't liked it yet");
 
   if (!likesArray.likes.find(id => id.toString() === userId)) {
