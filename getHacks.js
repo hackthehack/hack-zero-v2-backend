@@ -23,11 +23,8 @@ export const list = async (event, context) => {
         description: String,
         goal: String,
         team: Array,
-
-        likes: { type: [{ type: [mongoose.ObjectId] }], default: [] }
-
+        likes: { type: [{ type: [mongoose.ObjectId] }], default: [] },
         status: String
-
       })
     );
     conn.model("User", new mongoose.Schema({ name: String }));
@@ -36,15 +33,18 @@ export const list = async (event, context) => {
   try {
     // Post.aggregate([{$match: {postId: 5}}, {$project: {upvotes: {$size: '$upvotes'}}}])
 
-    let doc = await Query.find()
-      .populate("team", "-email", "User")
-      .lean();
+    const doc = await Query.find().populate("team", "-email", "User");
+
     let newDoc = doc.map(hack => {
+      return hack.toObject();
+    });
+
+    newDoc = newDoc.map(hack => {
       hack.likes = hack.likes.length;
       return hack;
     });
-    //console.log(newDoc);
-    // consle.log("-------------");
+
+    console.log(newDoc);
 
     return {
       statusCode: 200,
