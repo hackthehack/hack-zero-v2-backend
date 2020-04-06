@@ -16,13 +16,9 @@ export const detail = async (event, context) => {
     });
     conn.model(
       "Hack",
-      new mongoose.Schema({
-        title: String,
-        description: String,
-        goal: String,
-        team: Array,
-        likes: [mongoose.ObjectId]
-      })
+
+      new mongoose.Schema({ title: String, description: String, goal: String, creator: String, team: Array, status: String, likes:[mongoose.ObjectId] })
+
     );
     conn.model("User", new mongoose.Schema({ name: String, email: String }));
   }

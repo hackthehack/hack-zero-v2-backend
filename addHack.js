@@ -24,13 +24,14 @@ export const add = async (event, context) => {
         description: { type: String, default: "" },
         goal: { type: String, default: "" },
         team: { type: Array, default: [] },
+        status: { type: String, default: "New Hack"},
         creator: { type: String, default: null }
       })
     );
   }
   const Hack = conn.model("Hack");
 
-  const newIdea = pickIfTruthy(data, "title", "goal", "description", "creator", "team");
+  const newIdea = pickIfTruthy(data, "title", "goal", "description", "creator", "team", "status");
   console.log(newIdea);
 
   try {

@@ -23,7 +23,11 @@ export const list = async (event, context) => {
         description: String,
         goal: String,
         team: Array,
+
         likes: { type: [{ type: [mongoose.ObjectId] }], default: [] }
+
+        status: String
+
       })
     );
     conn.model("User", new mongoose.Schema({ name: String }));
