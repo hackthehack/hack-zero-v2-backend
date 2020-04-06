@@ -27,7 +27,7 @@ export const detail = async (event, context) => {
     conn.model("User", new mongoose.Schema({ name: String, email: String }));
   }
   const Hack = conn.model("Hack");
-  let hasUserLiked = false;
+  let hasUserLiked;
   let numberLikes = 0;
 
   // showing number of likes regardless if user is logged in
@@ -36,7 +36,9 @@ export const detail = async (event, context) => {
     let result = await Hack.findById(id);
     numberLikes = result.likes.length;
 
-    hasUserLiked = result.likes.find(id => id.toString() === userId);
+    hasUserLiked = result.likes.find(id => id.toString() === userId)
+      ? true
+      : false;
   } catch (err) {
     console.log(err);
     return {

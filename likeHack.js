@@ -64,51 +64,21 @@ export const like = async (event, context) => {
 
   //console.log("user hasn't liked it yet");
 
-  if (!likesArray.likes.find(id => id.toString() === userId)) {
-    try {
-      result = await Hack.findOneAndUpdate(
-        { _id: hackId },
-        {
-          $push: { likes: mongoose.Types.ObjectId(userId) }
-        },
-        {
-          new: true
-        }
-      );
-      numberLikes = result.likes.length;
-      return {
-        statusCode: 200,
-        headers: {
-          "Access-Control-Allow-Origin":
-            process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-          "Access-Control-Allow-Credentials": true
-        },
-        body: JSON.stringify({ numberLikes })
-      };
-    } catch (err) {
-      console.log(err);
-      return {
-        statusCode: 500,
-        headers: {
-          "Access-Control-Allow-Origin":
-            process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-          "Access-Control-Allow-Credentials": true
-        },
-        body: "Uable to like hack"
-      };
-    }
-  }
-  //"user already liked it");
+  //if (!likesArray.likes.find(id => id.toString() === userId)) {
   try {
     result = await Hack.findOneAndUpdate(
       { _id: hackId },
-      { $pull: { likes: mongoose.Types.ObjectId(userId) } },
-      { new: true }
+      {
+        $addToSet: { likes: mongoose.Types.ObjectId(userId) }
+      },
+      {
+        new: true
+      }
     );
     numberLikes = result.likes.length;
     return {
       statusCode: 200,
-      eaders: {
+      headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
@@ -125,4 +95,33 @@ export const like = async (event, context) => {
       body: "Uable to like hack"
     };
   }
+  //}
+
+  //"user already liked it");
+  // try {
+  //   result = await Hack.findOneAndUpdate(
+  //     { _id: hackId },
+  //     { $pull: { likes: mongoose.Types.ObjectId(userId) } },
+  //     { new: true }
+  //   );
+  //   numberLikes = result.likes.length;
+  //   return {
+  //     statusCode: 200,
+  //     eaders: {
+  //       "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+  //       "Access-Control-Allow-Credentials": true
+  //     },
+  //     body: JSON.stringify({ numberLikes })
+  //   };
+  // } catch (err) {
+  //   console.log(err);
+  //   return {
+  //     statusCode: 500,
+  //     headers: {
+  //       "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+  //       "Access-Control-Allow-Credentials": true
+  //     },
+  //     body: "Uable to like hack"
+  //   };
+  // }
 };
