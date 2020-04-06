@@ -22,7 +22,8 @@ export const list = async (event, context) => {
         title: String,
         description: String,
         goal: String,
-        team: Array
+        team: Array,
+        status: String
       })
     );
     conn.model("User", new mongoose.Schema({ name: String }));
