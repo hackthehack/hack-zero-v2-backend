@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
 let conn = null;
 
-export const dislike = async (event, context) => {};
 export const like = async (event, context) => {
   //need a hackid
   //need a userid

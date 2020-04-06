@@ -38,7 +38,7 @@ functions:
     handler: checkAuth.auth
 
   dislikehack:
-    handler: likehack.dislike
+    handler: dislikeHack.dislike
     events:
       - http:
           path: dislikehack
