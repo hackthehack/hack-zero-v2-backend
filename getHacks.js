@@ -22,23 +22,36 @@ export const list = async (event, context) => {
         title: String,
         description: String,
         goal: String,
-        team: Array
+        team: Array,
+        likes: { type: [{ type: [mongoose.ObjectId] }], default: [] }
       })
     );
     conn.model("User", new mongoose.Schema({ name: String }));
   }
   const Query = conn.model("Hack");
   try {
-    const doc = await Query.find().populate("team", "-email", "User");
+    // Post.aggregate([{$match: {postId: 5}}, {$project: {upvotes: {$size: '$upvotes'}}}])
+
+    let doc = await Query.find()
+      .populate("team", "-email", "User")
+      .lean();
+    let newDoc = doc.map(hack => {
+      hack.likes = hack.likes.length;
+      return hack;
+    });
+    //console.log(newDoc);
+    // consle.log("-------------");
+
     return {
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: JSON.stringify(doc)
+      body: JSON.stringify(newDoc)
     };
   } catch (err) {
+    console.log(err);
     return {
       statusCode: 500,
       headers: {
