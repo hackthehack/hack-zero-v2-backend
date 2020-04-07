@@ -38,7 +38,7 @@ functions:
     handler: ./services/auth/checkAuth.auth
 
   logout:
-    handler: logoutHandler.logout
+    handler: ./services/auth/logoutHandler.logout
     events:
       - http:
           path: logout
