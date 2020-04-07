@@ -1,27 +1,16 @@
-const mongoose = require("mongoose");
-
-let conn = null;
-const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
+import { connectToDatabase } from "../database/db";
+import Hack from "../database/models/HackModel";
+import User from "../database/models/UserModel";
 
 export const detail = async (event, context) => {
   const id = event.pathParameters.id;
   context.callbackWaitsForEmptyEventLoop = false;
-  if (conn == null) {
-    conn = await mongoose.createConnection(url, {
-      bufferCommands: false,
-      bufferMaxEntries: 0
-    });
-    conn.model(
-      "Hack",
-      new mongoose.Schema({ title: String, description: String, goal: String, creator: String, team: Array, status: String })
-    );
-    conn.model("User", new mongoose.Schema({ name: String, email: String }));
-  }
-  const Hack = conn.model("Hack");
 
   try {
-
-    let result = await Hack.findById(id).populate('team', '-email', 'User').populate('creator', '-email', 'User');
+    await connectToDatabase();
+    let result = await Hack.findById(id)
+      .populate("team", "-email", "User")
+      .populate("creator", "-email", "User");
     return {
       statusCode: 200,
       headers: {
