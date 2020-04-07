@@ -34,6 +34,27 @@ export const list = async (event, context) => {
     // Post.aggregate([{$match: {postId: 5}}, {$project: {upvotes: {$size: '$upvotes'}}}])
 
     const doc = await Query.find().populate("team", "-email", "User");
+    const test = await Query.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "team",
+          foreignField: "_id",
+          as: "team"
+        }
+      },
+      {
+        $project: {
+          team: { name: 1, _id: 1 },
+          likes: { $size: "$likes" },
+          _id: 1,
+          description: 1,
+          goal: 1,
+          title: 1
+        }
+      }
+    ]);
+    console.log(test);
 
     let newDoc = doc.map(hack => {
       return hack.toObject();
@@ -44,7 +65,7 @@ export const list = async (event, context) => {
       return hack;
     });
 
-    console.log(newDoc);
+    //console.log(newDoc);
 
     return {
       statusCode: 200,
