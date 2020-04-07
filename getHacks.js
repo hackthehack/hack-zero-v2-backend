@@ -33,8 +33,7 @@ export const list = async (event, context) => {
   try {
     // Post.aggregate([{$match: {postId: 5}}, {$project: {upvotes: {$size: '$upvotes'}}}])
 
-    const doc = await Query.find().populate("team", "-email", "User");
-    const test = await Query.aggregate([
+    const result = await Query.aggregate([
       {
         $lookup: {
           from: "users",
@@ -55,18 +54,6 @@ export const list = async (event, context) => {
         }
       }
     ]);
-    console.log(test);
-
-    let newDoc = doc.map(hack => {
-      return hack.toObject();
-    });
-
-    newDoc = newDoc.map(hack => {
-      hack.likes = hack.likes.length;
-      return hack;
-    });
-
-    //console.log(newDoc);
 
     return {
       statusCode: 200,
@@ -74,7 +61,7 @@ export const list = async (event, context) => {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: JSON.stringify(newDoc)
+      body: JSON.stringify(result)
     };
   } catch (err) {
     console.log(err);
