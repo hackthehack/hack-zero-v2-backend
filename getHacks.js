@@ -50,7 +50,8 @@ export const list = async (event, context) => {
           _id: 1,
           description: 1,
           goal: 1,
-          title: 1
+          title: 1,
+          status: 1
         }
       }
     ]);
