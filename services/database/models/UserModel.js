@@ -7,4 +7,4 @@ const userSchema = new Schema({
   name: String
 });
 
-module.exports = mongoose.model("User", userSchema);
+export default mongoose.model("User", userSchema);

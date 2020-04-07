@@ -1,9 +1,6 @@
-const mongoose = require("mongoose");
-// const HackModel = require("./model/hack");
-
-let conn = null;
-const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
-
+import { connectToDatabase } from "../database/db";
+import Hack from "../database/models/HackModel";
+import User from "../database/models/UserModel";
 /**
  * Lists all Hacks currently stored in the database
  * @param {*} event
@@ -11,26 +8,10 @@ const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@d
  */
 export const list = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
-  if (conn == null) {
-    conn = await mongoose.createConnection(url, {
-      bufferCommands: false,
-      bufferMaxEntries: 0
-    });
-    conn.model(
-      "Hack",
-      new mongoose.Schema({
-        title: String,
-        description: String,
-        goal: String,
-        team: Array,
-        status: String
-      })
-    );
-    conn.model("User", new mongoose.Schema({ name: String }));
-  }
-  const Query = conn.model("Hack");
+
   try {
-    const doc = await Query.find().populate("team", "-email", "User");
+    await connectToDatabase();
+    const doc = await Hack.find().populate("team", "-email", "User");
     return {
       statusCode: 200,
       headers: {

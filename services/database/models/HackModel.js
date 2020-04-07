@@ -12,4 +12,4 @@ const hackSchema = new Schema({
   likes: { type: [Schema.Types.ObjectId], default: [] }
 });
 
-module.exports = mongoose.model("Hack", hackSchema);
+export default mongoose.model("Hack", hackSchema);
