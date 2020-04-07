@@ -20,7 +20,8 @@ export const edit = async (event, context) => {
         description: String,
         goal: String,
         team: Array,
-        teamName: String
+        teamName: String,
+        status: String,
       })
     );
     conn.model("User", new mongoose.Schema({ name: String }));
@@ -28,14 +29,12 @@ export const edit = async (event, context) => {
 
   const Hack = conn.model("Hack");
 
-  const update = pickIfTruthy(data, "goal", "title", "description", "teamName");
+  const update = pickIfTruthy(data, "goal", "title", "description", "teamName", "status");
 
   try {
     const result = await Hack.findByIdAndUpdate(hackId, update, {
       new: true
     }).populate("team", "name", "User");
-
-    console.log(result);
     return {
       statusCode: 200,
       headers: {
