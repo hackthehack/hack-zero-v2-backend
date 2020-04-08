@@ -1,7 +1,7 @@
 import { connectToDatabase } from "../database/db";
 import Hack from "../database/models/HackModel";
-import User from "../database/models/UserModel";
-import mogoose from "mongoose";
+
+import mongoose from "mongoose";
 /**
  * Lists all Hacks currently stored in the database
  * @param {*} event
@@ -15,7 +15,10 @@ export const list = async (event, context) => {
     await connectToDatabase();
     const doc = await Hack.find({
       team: mongoose.Types.ObjectId(userid)
-    }).select("_id title description");
+    })
+      .populate("User")
+      .select("_id title description");
+
     return {
       statusCode: 200,
       headers: {
@@ -31,7 +34,7 @@ export const list = async (event, context) => {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: JSON.stringify(err)
+      body: "error"
     };
   }
 };

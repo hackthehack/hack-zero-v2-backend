@@ -11,7 +11,8 @@ export const list = async (event, context) => {
 
   try {
     await connectToDatabase();
-    const doc = await Hack.find().populate("team", "-email", "User");
+    const doc = await Hack.find().populate("team", "name", User);
+
     return {
       statusCode: 200,
       headers: {
@@ -21,6 +22,7 @@ export const list = async (event, context) => {
       body: JSON.stringify(doc)
     };
   } catch (err) {
+    console.log(err);
     return {
       statusCode: 500,
       headers: {

@@ -9,8 +9,8 @@ export const detail = async (event, context) => {
   try {
     await connectToDatabase();
     let result = await Hack.findById(id)
-      .populate("team", "-email", "User")
-      .populate("creator", "-email", "User");
+      .populate("team", "-email", User)
+      .populate("creator", "-email", User);
     return {
       statusCode: 200,
       headers: {
