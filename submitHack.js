@@ -13,33 +13,33 @@ export const submit = async (event, context) => {
       bufferCommands: false, // Disable mongoose buffering
       bufferMaxEntries: 0 // and MongoDB driver buffering
     });
-    if(!submissionId){
+    if (!submissionId) {
       submissionId = new mongoose.mongo.ObjectID();
     }
     conn.model(
       "submission",
       new mongoose.Schema({
         hackId: String,
-        message: String,
+        message: String
       })
     );
   }
 
   const Submission = conn.model("submission");
 
-  const submit = pickIfTruthy(data, "hackId", "message");
+  //const submit = pickIfTruthy(data, "hackId", "message");
   try {
-    const result = await Submission.findByIdAndUpdate(submissionId, submit, {
-      new: true,
-      upsert: true
-    });
+    // const result = await Submission.findByIdAndUpdate(submissionId, submit, {
+    //   new: true,
+    //   upsert: true
+    // });
     return {
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: JSON.stringify(result)
+      body: "submission successful"
     };
   } catch (err) {
     console.log(err.message);
