@@ -1,40 +1,26 @@
-const mongoose = require("mongoose");
+import User from "../database/models/UserModel";
+import Hack from "../database/models/HackModel";
+import { connectToDatabase } from "../database/db";
 import { pickIfTruthy } from "../../utils/";
-let conn = null;
-const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
 
 export const edit = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const data = JSON.parse(event.body);
   const { hackId } = data;
-
-  if (conn == null) {
-    conn = await mongoose.createConnection(url, {
-      bufferCommands: false, // Disable mongoose buffering
-      bufferMaxEntries: 0 // and MongoDB driver buffering
-    });
-    conn.model(
-      "Hack",
-      new mongoose.Schema({
-        title: String,
-        description: String,
-        goal: String,
-        team: Array,
-        teamName: String,
-        status: String,
-      })
-    );
-    conn.model("User", new mongoose.Schema({ name: String }));
-  }
-
-  const Hack = conn.model("Hack");
-
-  const update = pickIfTruthy(data, "goal", "title", "description", "teamName", "status");
+  const update = pickIfTruthy(
+    data,
+    "goal",
+    "title",
+    "description",
+    "teamName",
+    "status"
+  );
 
   try {
+    await connectToDatabase();
     const result = await Hack.findByIdAndUpdate(hackId, update, {
       new: true
-    }).populate("team", "name", "User");
+    }).populate("team", "name", User);
     return {
       statusCode: 200,
       headers: {
