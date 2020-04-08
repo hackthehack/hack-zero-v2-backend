@@ -1,9 +1,7 @@
-const mongoose = require("mongoose");
-// const HackModel = require("./model/hack");
-
-let conn = null;
-const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
-
+import { connectToDatabase } from "../database/db";
+import Hack from "../database/models/HackModel";
+import User from "../database/models/UserModel";
+import mogoose from "mongoose";
 /**
  * Lists all Hacks currently stored in the database
  * @param {*} event
@@ -12,19 +10,12 @@ const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@d
 export const list = async (event, context) => {
   const userid = event.pathParameters.id;
   context.callbackWaitsForEmptyEventLoop = false;
-  if (conn == null) {
-    conn = await mongoose.createConnection(url, {
-      bufferCommands: false,
-      bufferMaxEntries: 0
-    });
-    conn.model(
-      "Hack",
-      new mongoose.Schema({ title: String, description: String, team: Array })
-    );
-  }
-  const Query = conn.model("Hack");
+
   try {
-    const doc = await Query.find( { "team": mongoose.Types.ObjectId(userid) } ).select('_id title description');
+    await connectToDatabase();
+    const doc = await Hack.find({
+      team: mongoose.Types.ObjectId(userid)
+    }).select("_id title description");
     return {
       statusCode: 200,
       headers: {
@@ -40,7 +31,7 @@ export const list = async (event, context) => {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: err
+      body: JSON.stringify(err)
     };
   }
 };
