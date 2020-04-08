@@ -15,6 +15,11 @@ provider:
   runtime: nodejs10.x
   stage: dev
   region: us-east-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource: "arn:aws:s3:::hack-zero-submission-files/*"
 
 environment:
   MONGO_USER: ${env:MONGO_USER}
@@ -106,3 +111,29 @@ functions:
           path: userhacks/{id}
           method: get
           cors: true
+  upload:
+    handler: ./services/hack/uploadSubmission.upload
+    events:
+      - http:
+          path: upload
+          method: post
+          cors: true
+
+resources:
+  Resources:
+    UploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: hack-zero-submission-files
+        AccessControl: PublicRead
+        CorsConfiguration:
+          CorsRules:
+          - AllowedMethods:
+            - GET
+            - PUT
+            - POST
+            - HEAD
+            AllowedOrigins:
+            - process.env.ACCESS_CONTROL_ALLOW_ORIGIN
+            AllowedHeaders:
+            - process.env.ACCESS_CONTROL_ALLOW_ORIGIN
