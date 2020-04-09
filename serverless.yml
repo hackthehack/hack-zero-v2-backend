@@ -45,6 +45,24 @@ functions:
           method: post
           cors: true
 
+  dislikehack:
+    handler: ./services/hack/dislikeHack.dislike
+    events:
+      - http:
+          path: dislikehack
+          method: post
+          cors: true
+          authorizer: authorizerFunc
+
+  likehack:
+    handler: ./services/hack/likeHack.like
+    events:
+      - http:
+          path: likehack
+          method: post
+          cors: true
+          authorizer: authorizerFunc
+
   edithack:
     handler: ./services/hack/editHack.edit
     events:

@@ -23,6 +23,7 @@ export const list = async (event, context) => {
         description: String,
         goal: String,
         team: Array,
+        likes: { type: [{ type: [mongoose.ObjectId] }], default: [] },
         status: String
       })
     );
@@ -30,16 +31,40 @@ export const list = async (event, context) => {
   }
   const Query = conn.model("Hack");
   try {
-    const doc = await Query.find().populate("team", "-email", "User");
+    // Post.aggregate([{$match: {postId: 5}}, {$project: {upvotes: {$size: '$upvotes'}}}])
+
+    const result = await Query.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "team",
+          foreignField: "_id",
+          as: "team"
+        }
+      },
+      {
+        $project: {
+          team: { name: 1, _id: 1 },
+          likes: { $size: "$likes" },
+          _id: 1,
+          description: 1,
+          goal: 1,
+          title: 1,
+          status: 1
+        }
+      }
+    ]);
+
     return {
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: JSON.stringify(doc)
+      body: JSON.stringify(result)
     };
   } catch (err) {
+    console.log(err);
     return {
       statusCode: 500,
       headers: {
