@@ -105,7 +105,7 @@ functions:
           path: submit
           method: post
           cors: true
-          authorizer: authorizerFunc
+          #authorizer: authorizerFunc
   getSubmission:
     handler: getSubmission.submissionDetails
     events:
