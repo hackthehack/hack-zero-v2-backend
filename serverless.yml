@@ -46,7 +46,7 @@ functions:
           cors: true
 
   dislikehack:
-    handler: dislikeHack.dislike
+    handler: ./services/hack/dislikeHack.dislike
     events:
       - http:
           path: dislikehack
@@ -55,7 +55,7 @@ functions:
           authorizer: authorizerFunc
 
   likehack:
-    handler: likeHack.like
+    handler: ./services/hack/likeHack.like
     events:
       - http:
           path: likehack
