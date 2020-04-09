@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-import { pickIfTruthy } from "./utils";
+import { pickIfTruthy } from "../../utils/";
 let conn = null;
 const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
 
