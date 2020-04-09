@@ -27,8 +27,8 @@ export const dislike = async (event, context) => {
   let numberLikes;
   //check if the given userId exists
   try {
-    let user = await User.findById(userId);
-    console.log(user);
+    await User.findById(userId);
+    //console.log(user);
   } catch (err) {
     console.log(err);
     return {
@@ -50,7 +50,7 @@ export const dislike = async (event, context) => {
     numberLikes = result.likes.length;
     return {
       statusCode: 200,
-      eaders: {
+      headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
