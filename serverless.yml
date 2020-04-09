@@ -119,21 +119,3 @@ functions:
           method: post
           cors: true
 
-resources:
-  Resources:
-    UploadBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: hack-zero-submission-files
-        AccessControl: PublicRead
-        CorsConfiguration:
-          CorsRules:
-          - AllowedMethods:
-            - GET
-            - PUT
-            - POST
-            - HEAD
-            AllowedOrigins:
-            - process.env.ACCESS_CONTROL_ALLOW_ORIGIN
-            AllowedHeaders:
-            - process.env.ACCESS_CONTROL_ALLOW_ORIGIN

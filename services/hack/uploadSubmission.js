@@ -1,16 +1,21 @@
 const AWS = require('aws-sdk');
+AWS.config.update({
+    region: "ap-southeast-2",
+    accessKeyId: process.env.AWS_ACC_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET
+  });
 
 export const upload = async (event, context) => {
   const s3 = new AWS.S3({ signatureVersion: "v4" });
-  const key = JSON.stringify(event.body);
+  const { fileName } = JSON.parse(event.body);
 
-  console.log(key);
+  console.log(fileName);
 
   var fileToUpload = {
     Bucket: 'hack-zero-submission-files',
-    Key: key.fileName,
+    Key: fileName,
     ContentType: "multipart/form-data",
-    ACL: 'public-read',
+    Expires: 30000,
   };
 
   try {
@@ -27,6 +32,7 @@ export const upload = async (event, context) => {
     };
     return returnObject;
   } catch (e) {
+    console.log(e);
     const response = {
         err: e.message,
         headers: {
