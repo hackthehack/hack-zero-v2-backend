@@ -53,6 +53,7 @@ functions:
           method: post
           cors: true
           authorizer: authorizerFunc
+            resultTtlInSeconds: 0
 
   likehack:
     handler: ./services/hack/likeHack.like
@@ -62,6 +63,7 @@ functions:
           method: post
           cors: true
           authorizer: authorizerFunc
+            resultTtlInSeconds: 0
 
   edithack:
     handler: ./services/hack/editHack.edit
@@ -71,6 +73,7 @@ functions:
           method: post
           cors: true
           authorizer: authorizerFunc
+            resultTtlInSeconds: 0
 
   authuser:
     handler: ./services/auth/authUser.auth
@@ -101,6 +104,7 @@ functions:
           method: post
           cors: true
           authorizer: authorizerFunc
+            resultTtlInSeconds: 0
 
   joinhack:
     handler: ./services/hack/joinHack.join
@@ -110,6 +114,7 @@ functions:
           method: post
           cors: true
           authorizer: authorizerFunc
+            resultTtlInSeconds: 0
   gethacklist:
     handler: ./services/hack/getHacks.list
     events:
