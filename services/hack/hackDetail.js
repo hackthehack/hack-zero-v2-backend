@@ -3,18 +3,20 @@ import Hack from "../database/models/HackModel";
 import User from "../database/models/UserModel";
 
 export const detail = async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false;
   const id = event.pathParameters.id;
   const userId = event.queryStringParameters.userId;
 
   //need to know if the hack is liked or not by current user in order to show appropriate UI
-  context.callbackWaitsForEmptyEventLoop = false;
-  let hasUserLiked=false;
+  let hasUserLiked = false;
   let numberLikes = 0;
 
   // showing number of likes regardless if user is logged in
   // if user is logged in, find out if he liked it or not
   try {
+    await connectToDatabase();
     let result = await Hack.findById(id);
+
     numberLikes = result.likes.length;
     hasUserLiked = result.likes.find(id => id.toString() === userId);
   } catch (err) {
@@ -30,6 +32,7 @@ export const detail = async (event, context) => {
   }
 
   try {
+    await connectToDatabase();
     let result = await Hack.findById(id)
       .select("-likes")
       .populate("team", "-email", User);
