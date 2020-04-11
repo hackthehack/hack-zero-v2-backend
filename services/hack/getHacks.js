@@ -11,15 +11,35 @@ export const list = async (event, context) => {
 
   try {
     await connectToDatabase();
-    const doc = await Hack.find().populate("team", "name", User);
 
+    const result = await Hack.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "team",
+          foreignField: "_id",
+          as: "team"
+        }
+      },
+      {
+        $project: {
+          team: { name: 1, _id: 1 },
+          likes: { $size: "$likes" },
+          description: 1,
+          _id: 1,
+          goal: 1,
+          title: 1,
+          status: 1
+        }
+      }
+    ]);
     return {
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: JSON.stringify(doc)
+      body: JSON.stringify(result)
     };
   } catch (err) {
     console.log(err);
