@@ -36,7 +36,7 @@ export const dislike = async (event, context) => {
     numberLikes = result.likes.length;
     return {
       statusCode: 200,
-      eaders: {
+      headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
