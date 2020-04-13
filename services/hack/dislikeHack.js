@@ -1,6 +1,6 @@
 import { connectToDatabase } from "../database/db";
 import Hack from "../database/models/HackModel";
-import User from "../databse/models/UserModel";
+import User from "../database/models/UserModel";
 import mongoose from "mongoose";
 export const dislike = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;

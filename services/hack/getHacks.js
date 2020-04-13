@@ -1,6 +1,6 @@
 import { connectToDatabase } from "../database/db";
 import Hack from "../database/models/HackModel";
-import User from "../database/models/UserModel";
+
 /**
  * Lists all Hacks currently stored in the database
  * @param {*} event
