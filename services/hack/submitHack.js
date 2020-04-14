@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-import { pickIfTruthy } from "./utils";
+import { pickIfTruthy } from "../../utils";
 import { connectToDatabase } from "../database/db";
 import Submission from "../database/models/SubmissionModel";
 
