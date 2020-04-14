@@ -22,7 +22,7 @@ export const submit = async (event, context) => {
   const submit = pickIfTruthy(data, "hackId", "message");
   try {
     await connectToDatabase();
-    const result = await Submission.findByIdAndUpdate(submissionId, submit, {
+    await Submission.findByIdAndUpdate(submissionId, submit, {
       new: true,
       upsert: true
     });
