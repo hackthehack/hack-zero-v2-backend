@@ -1,3 +1,10 @@
 {
-  "extends": "strongloop"
+  "extends": "strongloop",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "modules": true,
+      "experimentalObjectRestSpread": true
+    }
 }
