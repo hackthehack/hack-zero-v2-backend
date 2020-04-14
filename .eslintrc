@@ -1,4 +1,14 @@
 {
   "extends": "strongloop",
-  "parser": "babel-eslint"
+  "parser": "babel-eslint",
+  "rules": {
+    "quotes": [1, "double", { "avoidEscape": false }],
+    "no-unused-vars": "off",
+    "comma-dangle": "off",
+    "arrow-parens": ["error", "as-needed"],
+    "no-console": ["warn"]
+  },
+  "env": {
+    "node": true
+  }
 }
