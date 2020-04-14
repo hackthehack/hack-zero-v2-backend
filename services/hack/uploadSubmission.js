@@ -24,7 +24,8 @@ export const upload = async (event, context) => {
     let returnObject = {
         statusCode: 200,
         headers: {
-            "access-control-allow-origin": "*"
+            "access-control-allow-origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+            "Access-Control-Allow-Credentials": true
         },
         body: JSON.stringify({
             fileUploadURL: preSignedURL
@@ -36,7 +37,8 @@ export const upload = async (event, context) => {
     const response = {
         err: e.message,
         headers: {
-            "access-control-allow-origin": "*"
+            "access-control-allow-origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+            "Access-Control-Allow-Credentials": true
         },
         body: "error occured"
     };
