@@ -12,6 +12,7 @@ export const dislike = async (event, context) => {
   //check if the given userId exists
   try {
     await connectToDatabase();
+
     await User.findById(userId);
     //console.log(user);
   } catch (err) {

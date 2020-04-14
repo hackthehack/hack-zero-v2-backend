@@ -8,6 +8,7 @@ export const detail = async (event, context) => {
   const userId = event.queryStringParameters.userId;
 
   //need to know if the hack is liked or not by current user in order to show appropriate UI
+
   let hasUserLiked = false;
   let numberLikes = 0;
 
@@ -17,7 +18,10 @@ export const detail = async (event, context) => {
     await connectToDatabase();
     let result = await Hack.findById(id);
 
+
     numberLikes = result.likes.length;
+
+
     hasUserLiked = result.likes.find(id => id.toString() === userId);
   } catch (err) {
     console.log(err);
