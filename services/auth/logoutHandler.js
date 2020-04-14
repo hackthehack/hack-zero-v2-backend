@@ -37,12 +37,20 @@ export const logout = async (event, context) => {
     console.log(result);
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
       body: "logged out"
     };
   } catch (err) {
     console.log(err);
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true
+      },
       body: "unable to logout"
     };
   }
