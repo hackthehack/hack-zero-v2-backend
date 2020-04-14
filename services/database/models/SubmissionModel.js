@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 const submissionSchema = new Schema({
-  hackId: mongoose.Types.ObjectId,
+  hackId: Schema.Types.ObjectId,
   message: String
 });
 
