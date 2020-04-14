@@ -1,6 +1,7 @@
 import AWS from "aws-sdk";
 import { pickIfTruthy } from "./utils";
 import { connectToDatabase } from "../database/db";
+import Submission from "../database/models/SubmissionModel";
 
 AWS.config.update({ region: "us-east-1" });
 const s3 = new AWS.S3({ apiVersion: "2006-03-01" });
@@ -17,8 +18,6 @@ export const submit = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const data = JSON.parse(event.body);
   let { submissionId } = data;
-
-  const Submission = conn.model("submission");
 
   const submit = pickIfTruthy(data, "hackId", "message");
   try {
