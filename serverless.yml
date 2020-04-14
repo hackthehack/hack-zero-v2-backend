@@ -148,15 +148,17 @@ functions:
           method: post
           cors: true
   submitHack:
-    handler: submitHack.submit
+    handler: ./services/hack/submitHack.submit
     events:
       - http:
           path: submit
           method: post
           cors: true
-          #authorizer: authorizerFunc
+          authorizer:
+            name: authorizerFunc
+            resultTtlInSeconds: 0
   getSubmission:
-    handler: getSubmission.submissionDetails
+    handler: ./services/hack/getSubmission.submissionDetails
     events:
       - http:
           path: submissionDetails/{id}
