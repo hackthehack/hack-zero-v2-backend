@@ -1,8 +1,7 @@
+import { connectToDatabase } from "../database/db";
+import Hack from "../database/models/HackModel";
+import User from "../database/models/UserModel";
 import mongoose from "mongoose";
-
-const uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
-let conn = null;
-
 export const like = async (event, context) => {
   //need a hackid
   //need a userid
@@ -14,29 +13,15 @@ export const like = async (event, context) => {
   const { hackId, userId } = data;
 
   //console.log(event.requestContext.authorizer.customKey);
-  if (conn == null) {
-    conn = await mongoose.createConnection(uri, {
-      bufferCommands: false,
-      bufferMaxEntries: 0
-    });
-    conn.model(
-      "Hack",
-      new mongoose.Schema({
-        likes: { type: [mongoose.ObjectId], default: [] }
-      })
-    );
-    conn.model("User", new mongoose.Schema({ name: String }));
-  }
-  const Hack = conn.model("Hack");
-  const User = conn.model("User");
+
   //let likesArray;
   let result;
   let numberLikes;
 
   //check if the given userId exists
   try {
-    let user = await User.findById(userId);
-    console.log(user);
+    await connectToDatabase();
+    await User.findById(userId);
   } catch (err) {
     console.log(err);
     return {
@@ -53,6 +38,7 @@ export const like = async (event, context) => {
 
   //if (!likesArray.likes.find(id => id.toString() === userId)) {
   try {
+    await connectToDatabase();
     result = await Hack.findOneAndUpdate(
       { _id: hackId },
       {

@@ -1,8 +1,7 @@
-const mongoose = require("mongoose");
-
-let conn = null;
-
-const uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
+import Hack from "../database/models/HackModel";
+import User from "../database/models/UserModel";
+import mongoose from "mongoose";
+import { connectToDatabase } from "../database/db";
 
 export const join = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -11,21 +10,13 @@ export const join = async (event, context) => {
 
   const mongUserID = mongoose.Types.ObjectId(userId);
 
-  if (conn == null) {
-    conn = await mongoose.createConnection(uri, {
-      bufferCommands: false,
-      bufferMaxEntries: 0
-    });
-    conn.model(
-      "Hack",
-      new mongoose.Schema({team: Array})
-    );
-    conn.model("User", new mongoose.Schema({ name: String}));
-  }
-  const Hack = conn.model("Hack");
-  // const Team = conn.model("User");
   try {
-    let res = await Hack.findOneAndUpdate({_id: hackId}, {$push: {team: mongUserID } }, {new: true, upsert: true}).populate('team', '-email', 'User');
+    await connectToDatabase();
+    let res = await Hack.findOneAndUpdate(
+      { _id: hackId },
+      { $push: { team: mongUserID } },
+      { new: true, upsert: true }
+    ).populate("team", "-email", User);
     // const doc = await Query.find()
     // const users = await Team.find();
     // for(const team_key in res.team){

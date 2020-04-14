@@ -1,8 +1,7 @@
-let AWS = require("aws-sdk");
-const util = require("util");
-const mongoose = require("mongoose");
-let conn = null;
-const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds157136.mlab.com:57136/hackone`;
+import AWS from "aws-sdk";
+import util from "util";
+import User from "../database/models/UserModel";
+import { connectToDatabase } from "../database/db";
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACC_KEY_ID,
@@ -42,18 +41,10 @@ export const register = async (event, context) => {
     Permanent: true
   };
 
-  if (conn == null) {
-    conn = await mongoose.createConnection(url, {
-      bufferCommands: false,
-      bufferMaxEntries: 0
-    });
-    conn.model("User", new mongoose.Schema({ name: String, email: String }));
-  }
-  const User = conn.model("User");
-
   try {
     await utilPromiseRegisterUser(createUserParams);
     await utilPromiseSetPassword(passwordParams);
+    await connectToDatabase();
     const newUser = new User({ email, name });
     await newUser.save();
     return {
