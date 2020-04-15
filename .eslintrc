@@ -3,10 +3,12 @@
   "parser": "babel-eslint",
   "rules": {
     "quotes": [1, "double", { "avoidEscape": false }],
-    "no-unused-vars": "off",
+    "space-before-function-paren": off,
     "comma-dangle": "off",
     "arrow-parens": ["error", "as-needed"],
-    "no-console": ["warn"]
+    "no-console": ["warn"],
+    "spaced-comment": "off",
+    "max-len": "off"
   },
   "env": {
     "node": true
