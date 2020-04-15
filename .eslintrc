@@ -1,0 +1,16 @@
+{
+  "extends": "strongloop",
+  "parser": "babel-eslint",
+  "rules": {
+    "quotes": [1, "double", { "avoidEscape": false }],
+    "space-before-function-paren": off,
+    "comma-dangle": "off",
+    "arrow-parens": ["error", "as-needed"],
+    "no-console": ["warn"],
+    "spaced-comment": "off",
+    "max-len": "off"
+  },
+  "env": {
+    "node": true
+  }
+}
