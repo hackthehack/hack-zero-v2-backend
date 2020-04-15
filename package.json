@@ -14,10 +14,8 @@
     "url": "https://github.com/AnomalyInnovations/serverless-nodejs-starter.git"
   },
   "devDependencies": {
-    "@shelf/jest-mongodb": "^1.1.5",
     "aws-sdk": "^2.636.0",
     "jest": "^25.2.3",
-    "mongodb-memory-server": "^6.3.3",
     "serverless-bundle": "^1.2.5",
     "serverless-offline": "^5.3.3",
     "supertest": "^4.0.2"
