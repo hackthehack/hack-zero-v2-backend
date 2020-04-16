@@ -1,6 +1,4 @@
 import { list } from "../../services/hack/getHacks";
-import { connectToDatabase } from "../../services/database/db";
-import Hack from "../../services/database/models/HackModel";
 
 jest.mock("../../services/database/db", () => ({
   __esModule: true,
@@ -8,15 +6,41 @@ jest.mock("../../services/database/db", () => ({
 }));
 jest.mock("../../services/database/models/HackModel", () => {
   return {
-    aggregate: jest.fn(),
+    aggregate: jest.fn().mockReturnValue([
+      {
+        id: "123",
+        title: "I am test",
+        description: "description",
+        goal: "goal",
+        team: [
+          {
+            name: "Jim",
+          },
+          { name: "Pete" },
+        ],
+        status: "looking",
+        likes: 0,
+      },
+    ]),
   };
 });
 test("END point /hacklist should return a list of hacks", async () => {
-  //const spyFunc = jest.spy(list)
-  connectToDatabase.mockImplementation(() => () =>
-    Promise.resolve("mocked value")
-  );
-  //Hack.mockImplementation(() => () => Promise.resolve("hello"));
   const result = await list({}, {});
-  console.log(result);
+  const expectedResponse = JSON.stringify([
+    {
+      id: "123",
+      title: "I am test",
+      description: "description",
+      goal: "goal",
+      team: [
+        {
+          name: "Jim",
+        },
+        { name: "Pete" },
+      ],
+      status: "looking",
+      likes: 0,
+    },
+  ]);
+  expect(result.body).toEqual(expectedResponse);
 });
