@@ -1,4 +1,7 @@
 {
+  "env": {
+    "jest/globals": true
+  },
   "extends": [
     "eslint:recommended",
     "strongloop",
@@ -10,7 +13,7 @@
     "sourceType": "module",
     "allowImportExportEverywhere": true
   },
-  "plugins": ["import"],
+  "plugins": ["import", "jest"],
   "rules": {
     "import/no-unresolved": [2, { "commonjs": true, "amd": true }],
     "quotes": [1, "double", { "avoidEscape": false }],
@@ -24,9 +27,5 @@
     "import/namespace": 2,
     "import/default": 2,
     "import/export": 2
-  },
-  "env": {
-    "node": true,
-    "jest/globals": true
   }
 }
