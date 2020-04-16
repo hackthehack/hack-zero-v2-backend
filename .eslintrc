@@ -1,16 +1,32 @@
 {
-  "extends": "strongloop",
+  "extends": [
+    "eslint:recommended",
+    "strongloop",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
   "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
+  },
+  "plugins": ["import"],
   "rules": {
+    "import/no-unresolved": [2, { "commonjs": true, "amd": true }],
     "quotes": [1, "double", { "avoidEscape": false }],
     "space-before-function-paren": off,
     "comma-dangle": "off",
     "arrow-parens": ["error", "as-needed"],
     "no-console": ["warn"],
     "spaced-comment": "off",
-    "max-len": "off"
+    "max-len": "off",
+    "import/named": 2,
+    "import/namespace": 2,
+    "import/default": 2,
+    "import/export": 2
   },
   "env": {
-    "node": true
+    "node": true,
+    "jest/globals": true
   }
 }
