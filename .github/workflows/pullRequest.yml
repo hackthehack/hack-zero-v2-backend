@@ -1,4 +1,4 @@
-name: Linting
+name: Linting/Unit-Test
 
 on: pull_request
 
@@ -10,3 +10,10 @@ jobs:
       - uses: stefanoeb/eslint-action@1.0.2
         with:
           files: services/
+
+  unitTest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: npm ci
+      - run: npm test
