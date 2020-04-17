@@ -25,7 +25,7 @@ jest.mock("../../services/database/models/HackModel", () => {
   };
 });
 test("END point /hacklist should return a list of hacks", async () => {
-  const result = await list({}, {});
+  const result = await list({ queryStringParameters: { id: "" } }, {});
   const expectedResponse = JSON.stringify([
     {
       id: "123",
