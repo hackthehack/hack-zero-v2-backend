@@ -8,7 +8,7 @@ import Hack from "../database/models/HackModel";
  */
 export const list = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
-
+  const userId = event.queryStringParameters.userId;
   try {
     await connectToDatabase();
 
@@ -18,8 +18,8 @@ export const list = async (event, context) => {
           from: "users",
           localField: "team",
           foreignField: "_id",
-          as: "team"
-        }
+          as: "team",
+        },
       },
       {
         $project: {
@@ -29,17 +29,17 @@ export const list = async (event, context) => {
           _id: 1,
           goal: 1,
           title: 1,
-          status: 1
-        }
-      }
+          status: 1,
+        },
+      },
     ]);
     return {
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-        "Access-Control-Allow-Credentials": true
+        "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify(result)
+      body: JSON.stringify(result),
     };
   } catch (err) {
     console.log(err);
@@ -47,9 +47,9 @@ export const list = async (event, context) => {
       statusCode: 500,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-        "Access-Control-Allow-Credentials": true
+        "Access-Control-Allow-Credentials": true,
       },
-      body: "Uable to fetch hacks data"
+      body: "Uable to fetch hacks data",
     };
   }
 };
