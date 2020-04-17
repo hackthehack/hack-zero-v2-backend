@@ -1,6 +1,6 @@
 import { connectToDatabase } from "../database/db";
 import Hack from "../database/models/HackModel";
-
+import mongoose from "mongoose";
 /**
  * Lists all Hacks currently stored in the database
  * @param {*} event
@@ -9,6 +9,8 @@ import Hack from "../database/models/HackModel";
 export const list = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const userId = event.queryStringParameters.userId;
+  //let hasUserLiked = false;
+  console.log(userId);
   try {
     await connectToDatabase();
 
@@ -27,6 +29,7 @@ export const list = async (event, context) => {
           likes: { $size: "$likes" },
           description: 1,
           _id: 1,
+          hasUserLiked: { $in: [mongoose.Types.ObjectId(userId), "$likes"] },
           goal: 1,
           title: 1,
           status: 1,
