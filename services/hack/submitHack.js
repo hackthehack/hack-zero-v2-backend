@@ -9,14 +9,12 @@ export const submit = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const data = JSON.parse(event.body);
   let { submissionId, files } = data;
-  console.log(data.files);
-  console.log(data.message);
-  if(submissionId === undefined){
+  if (submissionId === null){
     submissionId = mongoose.Types.ObjectId();
   }
   const submit = pickIfTruthy(data, "hackId", "message");
   submit.files = [];
-  for(let key in files){
+  for (let key in files){
     submit.files.push({name: files[key].name, size: files[key].size, type: files[key].type});
   }
   try {

@@ -39,7 +39,8 @@ export const detail = async (event, context) => {
     await connectToDatabase();
     let result = await Hack.findById(id)
       .select("-likes")
-      .populate("team", "-email", User);
+      .populate("team", "-email", User)
+      .populate("creator", "name", User);
     result = result.toObject();
     result.hasUserLiked = hasUserLiked;
     result.numberLikes = numberLikes;
