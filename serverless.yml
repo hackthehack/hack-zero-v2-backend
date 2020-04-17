@@ -147,6 +147,9 @@ functions:
           path: upload
           method: post
           cors: true
+          authorizer:
+            name: authorizerFunc
+            resultTtlInSeconds: 0
   submitHack:
     handler: ./services/hack/submitHack.submit
     events:

@@ -32,14 +32,13 @@ export const submit = async (event, context) => {
       body: "submission successful"
     };
   } catch (err) {
-    console.log(err.message);
     return {
       statusCode: 500,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: "Uable to update hack detail"
+      body: "Unable to update hack detail"
     };
   }
 };

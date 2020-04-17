@@ -24,7 +24,6 @@ export const detail = async (event, context) => {
 
     hasUserLiked = result.likes.find(id => id.toString() === userId);
   } catch (err) {
-    console.log(err);
     return {
       statusCode: 500,
       headers: {

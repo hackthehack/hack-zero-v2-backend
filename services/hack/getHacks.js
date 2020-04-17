@@ -42,7 +42,6 @@ export const list = async (event, context) => {
       body: JSON.stringify(result)
     };
   } catch (err) {
-    console.log(err);
     return {
       statusCode: 500,
       headers: {

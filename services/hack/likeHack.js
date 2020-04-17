@@ -23,14 +23,13 @@ export const like = async (event, context) => {
     await connectToDatabase();
     await User.findById(userId);
   } catch (err) {
-    console.log(err);
     return {
       statusCode: 500,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: "Uable to like hack"
+      body: "Unable to like hack"
     };
   }
 
@@ -58,7 +57,6 @@ export const like = async (event, context) => {
       body: JSON.stringify({ numberLikes })
     };
   } catch (err) {
-    console.log(err);
     return {
       statusCode: 500,
       headers: {
