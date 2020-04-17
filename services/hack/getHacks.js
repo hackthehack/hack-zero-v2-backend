@@ -29,7 +29,9 @@ export const list = async (event, context) => {
           likes: { $size: "$likes" },
           description: 1,
           _id: 1,
-          hasUserLiked: { $in: [mongoose.Types.ObjectId(userId), "$likes"] },
+          hasUserLiked: {
+            $in: [userId ? mongoose.Types.ObjectId(userId) : null, "$likes"],
+          },
           goal: 1,
           title: 1,
           status: 1,
