@@ -5,11 +5,11 @@ import util from "util";
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACC_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET
+  secretAccessKey: process.env.AWS_SECRET,
 });
 const COGNITO_CLIENT = new AWS.CognitoIdentityServiceProvider({
   apiVersion: "2016-04-19",
-  region: "us-east-1"
+  region: "us-east-1",
 });
 
 const utilPromiseInitAuth = util
@@ -30,12 +30,12 @@ export const auth = async (event, context) => {
     ClientId: process.env.AWS_USER_Client_ID,
     AuthFlow: "USER_PASSWORD_AUTH",
     AnalyticsMetadata: {
-      AnalyticsEndpointId: "STRING_VALUE"
+      AnalyticsEndpointId: "STRING_VALUE",
     },
     AuthParameters: {
       USERNAME: email,
-      PASSWORD: password
-    }
+      PASSWORD: password,
+    },
   };
 
   /**
@@ -46,24 +46,24 @@ export const auth = async (event, context) => {
     await connectToDatabase();
     let response = await utilPromiseInitAuth(userAuthParams);
     const doc = await User.findOne({ email: email });
-    console.log(doc._id);
+    // console.log(doc._id);
     response = { ...response, userId: doc._id };
     return {
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-        "Access-Control-Allow-Credentials": true
+        "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify(response)
+      body: JSON.stringify(response),
     };
   } catch (err) {
     return {
       statusCode: 500,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-        "Access-Control-Allow-Credentials": true
+        "Access-Control-Allow-Credentials": true,
       },
-      body: err.message
+      body: err.message,
     };
   }
 };

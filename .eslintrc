@@ -1,16 +1,31 @@
 {
-  "extends": "strongloop",
+  "env": {
+    "jest/globals": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "strongloop",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
   "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
+  },
+  "plugins": ["import", "jest"],
   "rules": {
+    "import/no-unresolved": [2, { "commonjs": true, "amd": true }],
     "quotes": [1, "double", { "avoidEscape": false }],
     "space-before-function-paren": off,
     "comma-dangle": "off",
     "arrow-parens": ["error", "as-needed"],
     "no-console": ["warn"],
     "spaced-comment": "off",
-    "max-len": "off"
-  },
-  "env": {
-    "node": true
+    "max-len": "off",
+    "import/named": 2,
+    "import/namespace": 2,
+    "import/default": 2,
+    "import/export": 2
   }
 }

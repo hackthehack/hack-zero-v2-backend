@@ -4,8 +4,8 @@
   "description": "A Node.js starter for the Serverless Framework with async/await and unit test support",
   "main": "handler.js",
   "scripts": {
-    "lint": "serverless-bundle eslint",
-    "test": "serverless-bundle test"
+    "lint": "babel-eslint",
+    "test": "jest ./tests/unit"
   },
   "author": "",
   "license": "MIT",
@@ -14,10 +14,11 @@
     "url": "https://github.com/AnomalyInnovations/serverless-nodejs-starter.git"
   },
   "devDependencies": {
-    "@shelf/jest-mongodb": "^1.1.5",
     "aws-sdk": "^2.636.0",
+    "babel-jest": "^25.3.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^23.8.2",
     "jest": "^25.2.3",
-    "mongodb-memory-server": "^6.3.3",
     "serverless-bundle": "^1.2.5",
     "serverless-offline": "^5.3.3",
     "supertest": "^4.0.2"
