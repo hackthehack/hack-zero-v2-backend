@@ -12,7 +12,7 @@ jest.mock("../../services/database/models/UserModel", () => {
 });
 
 test("END point /auth should return status 200 with correct parameters in req.body", async () => {
-  // const event = { body: { email: "test@test.com", password: "test" } };
-  // const result = await auth(event, {});
-  // console.log(result);
+  const event = { body: { email: "test@test.com", password: "test" } };
+  const result = await auth(event, {});
+  console.log(result);
 });
