@@ -31,7 +31,9 @@ export const list = async (event, context) => {
           _id: 1,
           hasUserLiked: {
             $in: [
-              userId !== "null" ? mongoose.Types.ObjectId(userId) : null,
+              userId !== "null" || !userId
+                ? mongoose.Types.ObjectId(userId)
+                : null,
               "$likes",
             ],
           },
