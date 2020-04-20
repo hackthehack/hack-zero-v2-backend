@@ -20,7 +20,7 @@
     "eslint-plugin-jest": "^23.8.2",
     "jest": "^25.2.3",
     "serverless-bundle": "^1.2.5",
-    "serverless-offline": "^5.3.3",
+    "serverless-offline": "^5.12.1",
     "supertest": "^4.0.2"
   },
   "dependencies": {
