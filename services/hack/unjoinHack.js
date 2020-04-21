@@ -8,10 +8,24 @@ export const unjoin = async (event, context) => {
   const data = JSON.parse(event.body);
   const { hackId, userId } = data;
 
-  const mongUserID = mongoose.Types.ObjectId(userId);
+  const mongoUserID = mongoose.Types.ObjectId(userId);
 
   try {
     await connectToDatabase();
+    let result = Hack.findOneAndUpdate(
+      { _id: hackId },
+      { $pull: { team: mongoUserID } },
+      { new: true }
+    ).populate("team", "-email", User);
+    console.log(result);
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+        "Access-Control-Allow-Credentials": true,
+      },
+      body: JSON.stringify(result),
+    };
   } catch (err) {
     console.log(err);
     return {
