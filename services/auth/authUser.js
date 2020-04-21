@@ -2,6 +2,7 @@ import User from "../database/models/UserModel";
 import { connectToDatabase } from "../database/db";
 import AWS from "aws-sdk";
 import util from "util";
+import * as authHelper from "./authUser";
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACC_KEY_ID,
@@ -44,10 +45,10 @@ export const auth = async (event, context) => {
    */
   try {
     await connectToDatabase();
-    let response = await utilPromiseInitAuth(userAuthParams);
+    let response = await authHelper.utilPromiseInitAuth(userAuthParams);
     const doc = await User.findOne({ email: email });
 
-    console.log(doc);
+    //console.log(doc);
     response = { ...response, userId: doc._id };
     return {
       statusCode: 200,

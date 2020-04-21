@@ -1,4 +1,4 @@
-import { auth } from "../../services/auth/authUser";
+import * as authHelper from "../../services/auth/authUser";
 
 jest.mock("../../services/database/db", () => ({
   __esModule: true,
@@ -18,11 +18,9 @@ test("END point /auth should return status 200 with correct parameters in req.bo
     email: "test@test.com",
     password: "password",
   });
-  // const mockCognitoCall = jest.mock();
-  // mockCognitoCall
-  //   .spyOn(authHelper, "utilPromiseInitAuth")
-  //   .mockReturnValue({ test: "okay" });
-  const result = await auth({ body }, {});
+  const spy = jest.spyOn(authHelper, "utilPromiseInitAuth");
+  spy.mockReturnValue({ test: "test" });
+  const result = await authHelper.auth({ body }, {});
 
-  console.log(result);
+  expect(result.statusCode).toBe(200);
 });
