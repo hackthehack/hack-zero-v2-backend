@@ -7,12 +7,22 @@ jest.mock("../../services/database/db", () => ({
 
 jest.mock("../../services/database/models/UserModel", () => {
   return {
-    test: "test",
+    findOne: jest.fn().mockReturnValue({
+      _id: "randomID",
+    }),
   };
 });
 
 test("END point /auth should return status 200 with correct parameters in req.body", async () => {
-  const event = { body: { email: "test@test.com", password: "test" } };
-  const result = await auth(event, {});
+  const body = JSON.stringify({
+    email: "test@test.com",
+    password: "password",
+  });
+  // const mockCognitoCall = jest.mock();
+  // mockCognitoCall
+  //   .spyOn(authHelper, "utilPromiseInitAuth")
+  //   .mockReturnValue({ test: "okay" });
+  const result = await auth({ body }, {});
+
   console.log(result);
 });

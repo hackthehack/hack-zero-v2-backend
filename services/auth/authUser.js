@@ -12,7 +12,7 @@ const COGNITO_CLIENT = new AWS.CognitoIdentityServiceProvider({
   region: "us-east-1",
 });
 
-const utilPromiseInitAuth = util
+export const utilPromiseInitAuth = util
   .promisify(COGNITO_CLIENT.initiateAuth)
   .bind(COGNITO_CLIENT);
 
@@ -46,7 +46,8 @@ export const auth = async (event, context) => {
     await connectToDatabase();
     let response = await utilPromiseInitAuth(userAuthParams);
     const doc = await User.findOne({ email: email });
-    // console.log(doc._id);
+
+    console.log(doc);
     response = { ...response, userId: doc._id };
     return {
       statusCode: 200,
