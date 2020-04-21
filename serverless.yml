@@ -167,3 +167,10 @@ functions:
           path: submissionDetails/{id}
           method: get
           cors: true
+  checkOrphanage:
+    handler: ./services/hack/submissionOrphanCheck.orphanage
+    events:
+      - http:
+          path: checkOrphanage
+          method: post
+          cors: true

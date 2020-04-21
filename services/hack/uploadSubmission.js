@@ -9,7 +9,7 @@ export const upload = async (event, context) => {
   const s3 = new AWS.S3({ signatureVersion: "v4" });
   const { fileName } = JSON.parse(event.body);
 
-  var fileToUpload = {
+  const fileToUpload = {
     Bucket: "hack-zero-submission-files",
     Key: fileName,
     ContentType: "multipart/form-data",
