@@ -19,15 +19,15 @@ export const edit = async (event, context) => {
   try {
     await connectToDatabase();
     const result = await Hack.findByIdAndUpdate(hackId, update, {
-      new: true
-    }).populate("team", "name", User);
+      new: true,
+    }).populate("team creator", "name", User);
     return {
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-        "Access-Control-Allow-Credentials": true
+        "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify(result)
+      body: JSON.stringify(result),
     };
   } catch (err) {
     console.log(err.message);
@@ -35,9 +35,9 @@ export const edit = async (event, context) => {
       statusCode: 500,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-        "Access-Control-Allow-Credentials": true
+        "Access-Control-Allow-Credentials": true,
       },
-      body: "Uable to update hack detail"
+      body: "Uable to update hack detail",
     };
   }
 };
