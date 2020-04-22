@@ -13,7 +13,7 @@ export const unjoin = async (event, context) => {
   console.log("before connection");
   try {
     await connectToDatabase();
-    let result = Hack.findOneAndUpdate(
+    let result = await Hack.findOneAndUpdate(
       { _id: hackId },
       { $pull: { team: mongoUserID } },
       { new: true }
@@ -25,7 +25,7 @@ export const unjoin = async (event, context) => {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true,
       },
-      body: "done",
+      body: JSON.stringify(result),
     };
   } catch (err) {
     console.log(err);
