@@ -13,13 +13,10 @@ export const submit = async (event, context) => {
     submissionId = mongoose.Types.ObjectId();
   }
   const submit = pickIfTruthy(data, "hackId", "message");
-  submit.files = [];
-  for (let key in files){
-    submit.files.push({name: files[key].name, size: files[key].size, type: files[key].type});
-  }
+  console.log(files);
   try {
     await connectToDatabase();
-    await Submission.findByIdAndUpdate(submissionId, submit, {
+    await Submission.findByIdAndUpdate(submissionId, {...submit, $addToSet: { files: files} }, {
       new: true,
       upsert: true
     });
