@@ -9,7 +9,8 @@ export const unjoin = async (event, context) => {
   const { hackId, userId } = data;
 
   const mongoUserID = mongoose.Types.ObjectId(userId);
-
+  console.log(mongoUserID);
+  console.log("before connection");
   try {
     await connectToDatabase();
     let result = Hack.findOneAndUpdate(
@@ -24,7 +25,7 @@ export const unjoin = async (event, context) => {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify(result),
+      body: "done",
     };
   } catch (err) {
     console.log(err);
