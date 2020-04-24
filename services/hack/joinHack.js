@@ -17,31 +17,30 @@ export const join = async (event, context) => {
       { $push: { team: mongUserID } },
       { new: true, upsert: true }
     ).populate("team", "-email", User);
-    // const doc = await Query.find()
-    // const users = await Team.find();
-    // for(const team_key in res.team){
-    //   users.forEach(member => {
-    //     if(JSON.stringify(member._id) == JSON.stringify(res.team[team_key])){
-    //       res.team[team_key] = {_id: member._id, name: member.name};
-    //     }
-    //   });
-    // }
+    //console.log(res);
+
+    if (res.status === "Submitted") throw new Error("Unable to join");
+
+    if (res.status === "Canceled") throw new Error("Hack is canceld");
+
+    if (res.status === "Team Closed") throw new Error("Hack is closed");
+
     return {
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-        "Access-Control-Allow-Credentials": true
+        "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify(res)
+      body: JSON.stringify(res),
     };
   } catch (err) {
     return {
       statusCode: 500,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-        "Access-Control-Allow-Credentials": true
+        "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify(err.message)
+      body: JSON.stringify(err.message),
     };
   }
 };
