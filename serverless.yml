@@ -15,6 +15,11 @@ provider:
   runtime: nodejs10.x
   stage: dev
   region: us-east-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource: "arn:aws:s3:::hack-zero-submission-files/*"
 
 environment:
   MONGO_USER: ${env:MONGO_USER}
@@ -145,6 +150,16 @@ functions:
           path: userhacks/{id}
           method: get
           cors: true
+  upload:
+    handler: ./services/hack/uploadSubmission.upload
+    events:
+      - http:
+          path: upload
+          method: post
+          cors: true
+          authorizer:
+            name: authorizerFunc
+            resultTtlInSeconds: 0
   submitHack:
     handler: ./services/hack/submitHack.submit
     events:
@@ -161,4 +176,11 @@ functions:
       - http:
           path: submissionDetails/{id}
           method: get
+          cors: true
+  checkOrphanage:
+    handler: ./services/hack/submissionOrphanCheck.orphanage
+    events:
+      - http:
+          path: checkOrphanage
+          method: post
           cors: true

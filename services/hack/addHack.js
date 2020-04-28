@@ -29,12 +29,11 @@ export const add = async (event, context) => {
         "Access-Control-Allow-Credentials": true
       },
       body: JSON.stringify({
-        message: `hack created`,
+        message: "hack created",
         id: query._id
       })
     };
   } catch (err) {
-    console.log(err);
     return {
       statusCode: 500,
       headers: {
@@ -42,7 +41,7 @@ export const add = async (event, context) => {
         "Access-Control-Allow-Credentials": true
       },
       body: JSON.stringify({
-        message: `Unable to create hack`
+        message: "Unable to create hack"
       })
     };
   }

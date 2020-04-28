@@ -16,14 +16,13 @@ export const dislike = async (event, context) => {
     await User.findById(userId);
     //console.log(user);
   } catch (err) {
-    console.log(err);
     return {
       statusCode: 500,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true
       },
-      body: "Uable to like hack"
+      body: "Unable to like hack"
     };
   }
 
@@ -44,7 +43,6 @@ export const dislike = async (event, context) => {
       body: JSON.stringify({ numberLikes })
     };
   } catch (err) {
-    console.log(err);
     return {
       statusCode: 500,
       headers: {

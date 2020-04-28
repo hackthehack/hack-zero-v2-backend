@@ -33,8 +33,7 @@ export const logout = async (event, context) => {
   };
 
   try {
-    let result = await utilPromiseAdminLogout(userParams);
-    console.log(result);
+    await utilPromiseAdminLogout(userParams);
     return {
       statusCode: 200,
       headers: {
@@ -44,7 +43,6 @@ export const logout = async (event, context) => {
       body: "logged out"
     };
   } catch (err) {
-    console.log(err);
     return {
       statusCode: 500,
       headers: {

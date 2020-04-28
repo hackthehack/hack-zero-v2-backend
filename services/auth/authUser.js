@@ -46,7 +46,6 @@ export const auth = async (event, context) => {
     await connectToDatabase();
     let response = await utilPromiseInitAuth(userAuthParams);
     const doc = await User.findOne({ email: email });
-    // console.log(doc._id);
     response = { ...response, userId: doc._id };
     return {
       statusCode: 200,

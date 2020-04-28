@@ -30,7 +30,6 @@ export const edit = async (event, context) => {
       body: JSON.stringify(result),
     };
   } catch (err) {
-    console.log(err.message);
     return {
       statusCode: 500,
       headers: {
