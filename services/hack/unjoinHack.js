@@ -3,38 +3,32 @@ import User from "../database/models/UserModel";
 import mongoose from "mongoose";
 import { connectToDatabase } from "../database/db";
 
-export const join = async (event, context) => {
+export const unjoin = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const data = JSON.parse(event.body);
   const { hackId, userId } = data;
 
-  const mongUserID = mongoose.Types.ObjectId(userId);
-
+  const mongoUserID = mongoose.Types.ObjectId(userId);
+  console.log(mongoUserID);
+  console.log("before connection");
   try {
     await connectToDatabase();
-    let res = await Hack.findOneAndUpdate(
+    let result = await Hack.findOneAndUpdate(
       { _id: hackId },
-      { $push: { team: mongUserID } },
-      { new: true, upsert: true }
+      { $pull: { team: mongoUserID } },
+      { new: true }
     ).populate("team", "-email", User);
-    //console.log(res);
-
-    // if (res.status === "Submitted") throw new Error("Unable to join");
-    //
-    // if (res.status === "Canceled") throw new Error("Hack is canceld");
-    //
-    // if (res.status === "Team Closed") throw new Error("Hack is closed");
-    if (["Submitted", "Canceled", "Team Closed"].includes(res.status))
-      throw new Error("Unable to join hack due to status");
+    console.log(result);
     return {
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
         "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify(res),
+      body: JSON.stringify(result),
     };
   } catch (err) {
+    console.log(err);
     return {
       statusCode: 500,
       headers: {
