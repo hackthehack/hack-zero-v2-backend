@@ -19,12 +19,13 @@ export const join = async (event, context) => {
     ).populate("team", "-email", User);
     //console.log(res);
 
-    if (res.status === "Submitted") throw new Error("Unable to join");
-
-    if (res.status === "Canceled") throw new Error("Hack is canceld");
-
-    if (res.status === "Team Closed") throw new Error("Hack is closed");
-
+    // if (res.status === "Submitted") throw new Error("Unable to join");
+    //
+    // if (res.status === "Canceled") throw new Error("Hack is canceld");
+    //
+    // if (res.status === "Team Closed") throw new Error("Hack is closed");
+    if (["Submitted", "Canceled", "Team Closed"].includes(res.status))
+      throw new Error("Unable to join hack due to status");
     return {
       statusCode: 200,
       headers: {
