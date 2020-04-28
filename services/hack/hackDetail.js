@@ -18,9 +18,7 @@ export const detail = async (event, context) => {
     await connectToDatabase();
     let result = await Hack.findById(id);
 
-
     numberLikes = result.likes.length;
-
 
     hasUserLiked = result.likes.find(id => id.toString() === userId);
   } catch (err) {
@@ -29,9 +27,9 @@ export const detail = async (event, context) => {
       statusCode: 500,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-        "Access-Control-Allow-Credentials": true
+        "Access-Control-Allow-Credentials": true,
       },
-      body: err.message
+      body: err.message,
     };
   }
 
@@ -39,28 +37,28 @@ export const detail = async (event, context) => {
     await connectToDatabase();
     let result = await Hack.findById(id)
       .select("-likes")
-      .populate("team", "-email", User);
+      .populate("team creator", "-email", User);
     result = result.toObject();
     result.hasUserLiked = hasUserLiked;
     result.numberLikes = numberLikes;
-    //console.log(result);
+    console.log(result);
 
     return {
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-        "Access-Control-Allow-Credentials": true
+        "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify(result)
+      body: JSON.stringify(result),
     };
   } catch (err) {
     return {
       statusCode: 500,
       headers: {
         "Access-Control-Allow-Origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-        "Access-Control-Allow-Credentials": true
+        "Access-Control-Allow-Credentials": true,
       },
-      body: err.message
+      body: err.message,
     };
   }
 };
