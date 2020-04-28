@@ -115,6 +115,16 @@ functions:
             name: authorizerFunc
             resultTtlInSeconds: 0
 
+  unjoinhack:
+    handler: ./services/hack/unjoinHack.unjoin
+    events:
+      - http:
+          path: unjoinHack
+          method: post
+          cors: true
+          authorizer:
+            name: authorizerFunc
+            resultTtlInSeconds: 0
   joinhack:
     handler: ./services/hack/joinHack.join
     events:
