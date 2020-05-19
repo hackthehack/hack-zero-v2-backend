@@ -103,8 +103,12 @@ docker pull mongo
 ### From the root of the project run:
 
 1. docker-compose up -d
-2. docker exec -it _containerID_ bash
-3. mkdir home/dump
+
+### Optional steps to grab test data from cloud database mlab
+
+1. docker exec -it _containerID_ bash
+
+2. mkdir home/dump
 
 ```javascript
 mongodump -h ds157136.mlab.com:57136 -d hackone -u yourusername -p yourpassword -o home/dump
