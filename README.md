@@ -56,10 +56,10 @@ export const hello = async (event, context) => {
     body: JSON.stringify({
       message: `Go Serverless v1.0! ${await message({
         time: 1,
-        copy: "Your function executed successfully!"
+        copy: "Your function executed successfully!",
       })}`,
-      input: event
-    })
+      input: event,
+    }),
   };
 };
 
@@ -89,6 +89,56 @@ $ npm test
 ```
 
 We use Jest to run our tests. You can read more about setting up your tests [here](https://facebook.github.io/jest/docs/en/getting-started.html#content)
+
+## Accessing and using a database behind proxy
+
+There might be restrictions behind company firewall for accessing cloud database provider such as mlab. The solutiion is to run a local development mongoDB instance with docker.
+
+### Make sure you have docker installed and running
+
+```
+docker pull mongo
+```
+
+### From the root of the project run:
+
+1. docker-compose up -d
+
+### Optional steps to grab test data from cloud database mlab
+
+1. docker exec -it _containerID_ bash
+
+2. mkdir home/dump
+
+```javascript
+mongodump -h ds157136.mlab.com:57136 -d hackone -u yourusername -p yourpassword -o home/dump
+```
+
+```javascript
+mongorestore / home / dump;
+```
+
+## To confirm run:
+
+**enter mongo interactive shell**
+
+```
+mongo
+```
+
+```
+show dbs
+
+```
+
+_Should show hackone as one of the dbs_
+
+```
+admin    0.000GB
+config   0.000GB
+hackone  0.000GB
+local    0.000GB
+```
 
 #### Deployment
 
