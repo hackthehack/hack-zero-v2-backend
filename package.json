@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "jwk-to-pem": "^2.0.3",
     "mongoose": "^5.9.3",
     "serverless-dotenv-plugin": "^2.1.1"
